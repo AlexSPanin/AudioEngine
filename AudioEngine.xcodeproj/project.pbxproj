@@ -14,6 +14,11 @@
 		E24A8A2627AAAD66008B297E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E24A8A2427AAAD66008B297E /* LaunchScreen.storyboard */; };
 		E24A8A2E27AAAFA8008B297E /* AudioEngineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24A8A2D27AAAFA8008B297E /* AudioEngineViewController.swift */; };
 		E24A8A3027AABB35008B297E /* Scott Buckley - Life In Silico.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E24A8A2F27AABB35008B297E /* Scott Buckley - Life In Silico.mp3 */; };
+		E2F61F5E27B7F99E006D6A7A /* 01 The St. Louis Blues.m4a in Resources */ = {isa = PBXBuildFile; fileRef = E2F61F5D27B7F99E006D6A7A /* 01 The St. Louis Blues.m4a */; };
+		E2F61F6527B7FB0D006D6A7A /* Music.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F61F6427B7FB0D006D6A7A /* Music.swift */; };
+		E2F61F6727B7FF4E006D6A7A /* Effect.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F61F6627B7FF4E006D6A7A /* Effect.swift */; };
+		E2F61F6927B923C7006D6A7A /* NavigationPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F61F6827B923C7006D6A7A /* NavigationPlayerView.swift */; };
+		E2F61F6B27B926CD006D6A7A /* Buttons.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F61F6A27B926CD006D6A7A /* Buttons.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +31,11 @@
 		E24A8A2727AAAD66008B297E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E24A8A2D27AAAFA8008B297E /* AudioEngineViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioEngineViewController.swift; sourceTree = "<group>"; };
 		E24A8A2F27AABB35008B297E /* Scott Buckley - Life In Silico.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Scott Buckley - Life In Silico.mp3"; sourceTree = "<group>"; };
+		E2F61F5D27B7F99E006D6A7A /* 01 The St. Louis Blues.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = "01 The St. Louis Blues.m4a"; sourceTree = "<group>"; };
+		E2F61F6427B7FB0D006D6A7A /* Music.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Music.swift; sourceTree = "<group>"; };
+		E2F61F6627B7FF4E006D6A7A /* Effect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Effect.swift; sourceTree = "<group>"; };
+		E2F61F6827B923C7006D6A7A /* NavigationPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationPlayerView.swift; sourceTree = "<group>"; };
+		E2F61F6A27B926CD006D6A7A /* Buttons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Buttons.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,16 +68,69 @@
 		E24A8A1827AAAD64008B297E /* AudioEngine */ = {
 			isa = PBXGroup;
 			children = (
-				E24A8A2D27AAAFA8008B297E /* AudioEngineViewController.swift */,
-				E24A8A1927AAAD64008B297E /* AppDelegate.swift */,
-				E24A8A1B27AAAD64008B297E /* SceneDelegate.swift */,
-				E24A8A1F27AAAD64008B297E /* Main.storyboard */,
-				E24A8A2227AAAD66008B297E /* Assets.xcassets */,
-				E24A8A2427AAAD66008B297E /* LaunchScreen.storyboard */,
-				E24A8A2727AAAD66008B297E /* Info.plist */,
-				E24A8A2F27AABB35008B297E /* Scott Buckley - Life In Silico.mp3 */,
+				E2F61F6C27B9862F006D6A7A /* View */,
+				E2F61F6327B7FADD006D6A7A /* Model */,
+				E2F61F6127B7F9F9006D6A7A /* Viewcontrollers */,
+				E2F61F6227B7FA20006D6A7A /* Services */,
+				E2F61F6027B7F9D2006D6A7A /* Files */,
+				E2F61F5F27B7F9B8006D6A7A /* Storyboards */,
 			);
 			path = AudioEngine;
+			sourceTree = "<group>";
+		};
+		E2F61F5F27B7F9B8006D6A7A /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				E24A8A2427AAAD66008B297E /* LaunchScreen.storyboard */,
+				E24A8A1F27AAAD64008B297E /* Main.storyboard */,
+			);
+			path = Storyboards;
+			sourceTree = "<group>";
+		};
+		E2F61F6027B7F9D2006D6A7A /* Files */ = {
+			isa = PBXGroup;
+			children = (
+				E24A8A2227AAAD66008B297E /* Assets.xcassets */,
+				E24A8A2F27AABB35008B297E /* Scott Buckley - Life In Silico.mp3 */,
+				E2F61F5D27B7F99E006D6A7A /* 01 The St. Louis Blues.m4a */,
+			);
+			path = Files;
+			sourceTree = "<group>";
+		};
+		E2F61F6127B7F9F9006D6A7A /* Viewcontrollers */ = {
+			isa = PBXGroup;
+			children = (
+				E24A8A2D27AAAFA8008B297E /* AudioEngineViewController.swift */,
+			);
+			path = Viewcontrollers;
+			sourceTree = "<group>";
+		};
+		E2F61F6227B7FA20006D6A7A /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				E24A8A2727AAAD66008B297E /* Info.plist */,
+				E24A8A1B27AAAD64008B297E /* SceneDelegate.swift */,
+				E24A8A1927AAAD64008B297E /* AppDelegate.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		E2F61F6327B7FADD006D6A7A /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				E2F61F6427B7FB0D006D6A7A /* Music.swift */,
+				E2F61F6627B7FF4E006D6A7A /* Effect.swift */,
+				E2F61F6A27B926CD006D6A7A /* Buttons.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		E2F61F6C27B9862F006D6A7A /* View */ = {
+			isa = PBXGroup;
+			children = (
+				E2F61F6827B923C7006D6A7A /* NavigationPlayerView.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -128,6 +191,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E2F61F5E27B7F99E006D6A7A /* 01 The St. Louis Blues.m4a in Resources */,
 				E24A8A2627AAAD66008B297E /* LaunchScreen.storyboard in Resources */,
 				E24A8A2327AAAD66008B297E /* Assets.xcassets in Resources */,
 				E24A8A2127AAAD64008B297E /* Main.storyboard in Resources */,
@@ -142,9 +206,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E2F61F6B27B926CD006D6A7A /* Buttons.swift in Sources */,
+				E2F61F6727B7FF4E006D6A7A /* Effect.swift in Sources */,
 				E24A8A1A27AAAD64008B297E /* AppDelegate.swift in Sources */,
 				E24A8A2E27AAAFA8008B297E /* AudioEngineViewController.swift in Sources */,
 				E24A8A1C27AAAD64008B297E /* SceneDelegate.swift in Sources */,
+				E2F61F6527B7FB0D006D6A7A /* Music.swift in Sources */,
+				E2F61F6927B923C7006D6A7A /* NavigationPlayerView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -295,7 +363,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = QD5349NP78;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = AudioEngine/Info.plist;
+				INFOPLIST_FILE = AudioEngine/Services/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -323,7 +391,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = QD5349NP78;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = AudioEngine/Info.plist;
+				INFOPLIST_FILE = AudioEngine/Services/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
