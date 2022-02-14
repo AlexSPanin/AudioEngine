@@ -5,12 +5,9 @@
 //  Created by Александр Панин on 13.02.2022.
 //
 
-
-
-
 import UIKit
 
-class NavigationPlayerView {
+class ButtonPlayerView {
     
     private let stack = UIStackView()
     private let heigth: CGFloat = 30
@@ -18,7 +15,7 @@ class NavigationPlayerView {
     private let colorTint: UIColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
     private var audioVC = AudioEngineViewController()
        
-    static var shared = NavigationPlayerView()
+    static var shared = ButtonPlayerView()
     
     private init() {}
     
