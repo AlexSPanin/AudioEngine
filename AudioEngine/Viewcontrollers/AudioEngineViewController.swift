@@ -382,8 +382,10 @@ extension AudioEngineViewController {
     private func clearColorButtonEffect(_ tag: Int) {
         let setting = Setting.getSetting()
         for button in buttonsEffect {
+            if button.tag != 0 {
             button.backgroundColor = button.tag == tag ? setting.colorPressedButtonEffect : setting.colorBgrnd
             labelsEffect[button.tag].backgroundColor = button.tag == tag ? setting.colorPressedButtonEffect : setting.colorBgrnd
+            }
         }
     }
     
