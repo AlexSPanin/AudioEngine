@@ -12,12 +12,12 @@ import AVFoundation
 
 class AudioEngineViewController: UIViewController {
     
-   var effectView = UIView()
-    var buttonPlayerStack = UIStackView()
-    var buttonEffectStack = UIStackView()
-    var sliderEffectStack: UIStackView?
+    var tag = 4
     
-    var tag = 1
+  lazy  var sliderStack: UIStackView = {
+      let stack = SliderEffectView.shared.createSlidersStack(4)
+      return stack
+    }()
     
     var audioFile: AVAudioFile?
     var engine = AVAudioEngine()
@@ -46,24 +46,34 @@ class AudioEngineViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .gray
-        print(tag)
-        setupUI(tag)
+
         setupNavigationViewPlayer()
+        setupEffectView(tag)
         
     }
     
-    override func viewDidLayoutSubviews() {
-  //     setupNavigationSlidersEffect(4)
-        }
-
+    @IBAction func doSomething(sender: UISlider) {
+        printContent(sender.value)
+        
+    }
     
+
+//    override func viewWillLayoutSubviews() {
+//            print("DidLay ", tag)
+//        }
+//
+//
+//    override func viewWillAppear(_ animated: Bool) {
+//            super.viewWillAppear(true)
+//
+//        print("viewApp ", tag)
+//
+//        }
+
     @IBAction func pitchSlider(_ sender: UISlider) {
         editingPitch(sender)
         
     }
-
-    
 
     func playButton() {
 //        pitchEffect.pitch = valuePitchEffect ?? 0
@@ -95,8 +105,6 @@ class AudioEngineViewController: UIViewController {
     }
     
     func configureEngine(_ format: AVAudioFormat) {
-        
-        
         
             engine.attach(player)
     //        engine.attach(eqEffect)
@@ -144,26 +152,32 @@ class AudioEngineViewController: UIViewController {
         }
     }
     
-    func reloadUI(_ tag: Int) {
+    func reloadUI() {
+   
+        guard let max = self.view.viewWithTag(202) as? UIImageView else { return print("No") }
+        print("Yes")
+        max.tintColor = .gray
+//        self.view.reloadInputViews()
+//        let slider = stack.subviews[1]
+//        slider.removeFromSuperview()
+//        slider.reloadInputViews()
+//        print(stack.subviews.count)
+//        stack.addArrangedSubview(SliderEffectView.shared.createSlidersStack(tag))
+//        print(stack.subviews.count)
+//
+//
+    
+
         
-        print(sliderEffectStack?.tag ?? 0)
         
-        if let viewWithTag = self.view.viewWithTag(30) {
-            viewWithTag.removeFromSuperview()
-        }else{
-            print("No!")
-        }
-        viewDidLayoutSubviews()
+  //          viewWithTag.removeFromSuperview()
+        
+//        viewDidLayoutSubviews()
 //        let effect = view.subviews[1]
 //        effect.removeFromSuperview()
 //
 //        view.reloadInputViews()
-        
-        let count = view.subviews.count
-       
-        self.tag = tag
-        print(" reload ",self.tag)
-        print("view ", count)
+  
  //       setupUI(tag)
         
  //       view.reloadInputViews()
@@ -181,64 +195,78 @@ class AudioEngineViewController: UIViewController {
     
     
     func setupUI(_ tag: Int) {
-        setupEffectView()
+          setupEffectView(tag)
         
-        setupNavigationButtonEffect()
-        setupNavigationSlidersEffect(tag)
+//        setupNavigationButtonEffect()
+//        setupNavigationSlidersEffect(tag)
         
         
     }
     
     
     
-    func setupEffectView() {
-        effectView.backgroundColor = .white
-        effectView.layer.cornerRadius = 15
-        view.addSubview(effectView)
-        effectView.translatesAutoresizingMaskIntoConstraints = false
+    func setupEffectView(_ tag: Int) {
+        let height = view.bounds.width / 6
+        let button = ButtonEffectView.shared.createButtonStack()
+        button.tag = 30
+//        let slider = SliderEffectView.shared.createSlidersStack(tag)
+//        slider.tag = 20
+        let stack = UIStackView(arrangedSubviews: [button, sliderStack])
+        stack.tag = 40
+    
         
-        effectView.heightAnchor.constraint(equalToConstant: 210).isActive = true
-        effectView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        effectView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        effectView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        stack.axis = .vertical
+        stack.spacing = 0
+        stack.distribution = UIStackView.Distribution.fillProportionally
+        
+        view.addSubview(stack)
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        
+        stack.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
+        stack.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20).isActive = true
+        stack.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -height).isActive = true
     }
     
     private func setupNavigationViewPlayer() {
-        let height = view.bounds.height / 10
-        buttonPlayerStack = ButtonPlayerView.shared.setupNavigationPlayer()
-        view.addSubview(buttonPlayerStack)
-        
-        buttonPlayerStack.translatesAutoresizingMaskIntoConstraints = false
-        
-        buttonPlayerStack.heightAnchor.constraint(equalToConstant: height).isActive = true
-        buttonPlayerStack.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        buttonPlayerStack.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        buttonPlayerStack.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-    }
-    
-    func setupNavigationSlidersEffect(_ tag: Int) {
-        
-        sliderEffectStack = SliderEffectView.shared.setupNavigationSliderEffect(tag)
-        guard let stack = sliderEffectStack else { return }
-        stack.tag = 30
-        effectView.addSubview(stack)
+        let height = view.bounds.width / 8
+        let stack = ButtonPlayerView.shared.setupNavigationPlayer()
+        view.addSubview(stack)
+        stack.tag = 10
         
         stack.translatesAutoresizingMaskIntoConstraints = false
-        stack.leftAnchor.constraint(equalTo: effectView.leftAnchor, constant: 20).isActive = true
-        stack.rightAnchor.constraint(equalTo: effectView.rightAnchor, constant: -20).isActive = true
-        stack.topAnchor.constraint(equalTo: buttonEffectStack.bottomAnchor, constant: 10).isActive = true
+        
+        stack.heightAnchor.constraint(equalToConstant: height).isActive = true
+        stack.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        stack.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        stack.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
     }
     
-    func setupNavigationButtonEffect() {
-        buttonEffectStack = SliderEffectView.shared.setupNavigationButtonsEffect()
-        
-        effectView.addSubview(buttonEffectStack)
-        
-        buttonEffectStack.translatesAutoresizingMaskIntoConstraints = false
-        buttonEffectStack.leftAnchor.constraint(equalTo: effectView.leftAnchor, constant: 15).isActive = true
-        buttonEffectStack.rightAnchor.constraint(equalTo: effectView.rightAnchor, constant: -15).isActive = true
-        buttonEffectStack.topAnchor.constraint(equalTo: effectView.topAnchor, constant: 15).isActive = true
-    }
+//    func setupNavigationSlidersEffect(_ tag: Int) {
+//        let height = view.bounds.width / 10
+//        let stack = SliderEffectView.shared.createSlidersStack(tag)
+//        stack.tag = 30
+//        effectView.addSubview(stack)
+//
+//        stack.translatesAutoresizingMaskIntoConstraints = false
+//        stack.heightAnchor.constraint(equalToConstant: height).isActive = true
+//        stack.leftAnchor.constraint(equalTo: effectView.leftAnchor, constant: 20).isActive = true
+//        stack.rightAnchor.constraint(equalTo: effectView.rightAnchor, constant: -20).isActive = true
+//        stack.topAnchor.constraint(equalTo: effectView.topAnchor, constant: 2 * height).isActive = true
+//    }
+//
+//    func setupNavigationButtonEffect() {
+//        let height = view.bounds.width / 10
+//        let stack = ButtonEffectView.shared.createButtonStack()
+//        stack.tag = 20
+//        effectView.addSubview(stack)
+//
+//        stack.translatesAutoresizingMaskIntoConstraints = false
+//
+//        stack.heightAnchor.constraint(equalToConstant: height).isActive = true
+//        stack.leftAnchor.constraint(equalTo: effectView.leftAnchor, constant: 15).isActive = true
+//        stack.rightAnchor.constraint(equalTo: effectView.rightAnchor, constant: -15).isActive = true
+//        stack.topAnchor.constraint(equalTo: effectView.topAnchor, constant: 15).isActive = true
+//    }
     
     
     

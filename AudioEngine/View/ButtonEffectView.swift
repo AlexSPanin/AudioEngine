@@ -8,28 +8,34 @@
 import UIKit
 
 class ButtonEffectView {
-    
+    private var audioVC = AudioEngineViewController()
     static var shared = ButtonEffectView()
     private init() {}
     
     @objc func pressEffectButtons(_ sender: UIButton) {
         
+        let tag = sender.tag
         
-        switch sender.tag {
+        audioVC.tag = tag
+        audioVC.reloadUI()
+        
+        switch tag {
         case 0:
-            return
+            sender.backgroundColor = sender.backgroundColor == .gray ? .white : .gray
         case 1:
-            return
+            sender.backgroundColor = sender.backgroundColor == .gray ? .white : .gray
+           
         case 2:
-            return
+            sender.backgroundColor = sender.backgroundColor == .gray ? .white : .gray
         case 3:
-            return
+            sender.backgroundColor = sender.backgroundColor == .gray ? .white : .gray
         case 4:
-            return
+            sender.backgroundColor = sender.backgroundColor == .gray ? .white : .gray
         default:
-            return
+            sender.backgroundColor = sender.backgroundColor == .gray ? .white : .gray
         }
     }
+    
     func createButtonStack() -> UIStackView {
         let setting = Setting.getSetting()
         let stack = UIStackView()
@@ -43,7 +49,7 @@ class ButtonEffectView {
             let title = createLabel(
                 title: type.name,
                 font: setting.nameFont,
-                size: setting.normalSize,
+                size: setting.smallSize,
                 colorText: setting.colorText,
                 colorBgrnd: setting.colorBgrnd
             )

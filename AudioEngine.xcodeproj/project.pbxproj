@@ -133,8 +133,8 @@
 			isa = PBXGroup;
 			children = (
 				E2F61F6827B923C7006D6A7A /* ButtonPlayerView.swift */,
-				E2F61F6D27B98675006D6A7A /* SliderEffectView.swift */,
 				E252CDDB27BAB16900318B20 /* ButtonEffectView.swift */,
+				E2F61F6D27B98675006D6A7A /* SliderEffectView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";

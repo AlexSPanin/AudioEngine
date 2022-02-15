@@ -8,21 +8,14 @@
 import UIKit
 
 class SliderEffectView {
-    
-//    let fontNormal = UIFont(name: "Thonburi", size: 10)
-//    let fontLarge = UIFont(name: "Thonburi", size: 20)
-    
+ 
     private let stack = UIStackView()
-//    private let heigth: CGFloat = 30
-//    private let colorBgrn: UIColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-//    private let colorTint: UIColor = #colorLiteral(red: 0.7450980544, green: 0.1568627506, blue: 0.07450980693, alpha: 1)
-//    private let colorTextButton: UIColor = #colorLiteral(red: 0.7450980544, green: 0.1568627506, blue: 0.07450980693, alpha: 1)
-//    private let colorTextSlider: UIColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
     private var audioVC = AudioEngineViewController()
     
     static var shared = SliderEffectView()
     
     private init() {}
+    
     
     
     func createSlidersStack(_ tag: Int) -> UIStackView {
@@ -33,13 +26,14 @@ class SliderEffectView {
         var stack = UIStackView()
         
         switch tag {
+            
         case 0:
             return stack
         case 1:
             slider = volumeSlider()
             stackLabel = volumeLabel(
                 font: setting.nameFont, size: setting.normalSize,
-                colorText: setting.colorText, colorBgrnd: setting.colorBgrnd)
+                colorText: setting.colorLabel, colorBgrnd: setting.colorBgrnd)
             let stackSlider = UIStackView(arrangedSubviews: [stackLabel, slider])
             stack = stackSlider
         default:
@@ -48,6 +42,7 @@ class SliderEffectView {
             let stackSlider = UIStackView(arrangedSubviews: [slider, stackLabel])
             stack = stackSlider
         }
+        
         slider.thumbTintColor = setting.colorBgrnd
         slider.minimumTrackTintColor = setting.colorTint
         slider.isContinuous = true
@@ -59,7 +54,9 @@ class SliderEffectView {
         
         return stack
     }
-    private func createLabel(
+    
+    // функция подготовки надписи
+  func createLabel(
         title: String, font: String, size: CGFloat,
         colorText: UIColor, colorBgrnd: UIColor) -> UILabel {
             
@@ -75,8 +72,8 @@ class SliderEffectView {
             label.text = title
             return label
         }
-    
-    private func createImageView(name: String, colorTint: UIColor, colorBgrnd: UIColor) -> UIImageView {
+    // функция подкотовки изображения для слайдера
+ func createImageView(name: String, colorTint: UIColor, colorBgrnd: UIColor) -> UIImageView {
         let image = UIImage(systemName: name)
         let imageView = UIImageView(frame: CGRect(
             x: 0,
@@ -90,11 +87,8 @@ class SliderEffectView {
         return imageView
     }
     
-    
-    
-
-    
-    private func volumeLabel(font: String, size: CGFloat, colorText: UIColor, colorBgrnd: UIColor) -> UIStackView {
+    // формирует подпись для слайдера громкость
+func volumeLabel(font: String, size: CGFloat, colorText: UIColor, colorBgrnd: UIColor) -> UIStackView {
 
         let minLabel = createLabel(
             title: "0 ДБ",
@@ -112,6 +106,9 @@ class SliderEffectView {
         )
         minLabel.textAlignment = .left
         maxLabel.textAlignment = .right
+        minLabel.tag = 101
+        maxLabel.tag = 102
+        
         let stack = UIStackView(arrangedSubviews: [minLabel, maxLabel])
         stack.axis = .horizontal
         stack.spacing = 5
@@ -120,9 +117,8 @@ class SliderEffectView {
         return stack
     }
     
-    
-    
-    private func createImageSliderStack(tag: Int, colorTint: UIColor, colorBgrnd: UIColor) -> UIStackView {
+    // формирует изображения к слайдеру
+ func createImageSliderStack(tag: Int, colorTint: UIColor, colorBgrnd: UIColor) -> UIStackView {
         let sliderImage = EffectSliderImage.getEffectSliderImage()
         let min = sliderImage[tag].minImage
         let max = sliderImage[tag].maxImage
@@ -130,7 +126,8 @@ class SliderEffectView {
         let maxImage = createImageView(name: max, colorTint: colorTint, colorBgrnd: colorBgrnd)
         minImage.contentMode = .left
         maxImage.contentMode = .right
-        
+     minImage.tag = 201
+     maxImage.tag = 202
         let stack = UIStackView(arrangedSubviews: [minImage, maxImage])
         stack.axis = .horizontal
         stack.spacing = 5
