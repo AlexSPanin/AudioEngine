@@ -26,15 +26,16 @@ enum Buttons: String, CaseIterable {
 struct PlayerButtons {
     
     let tag: Int
-    let type: Buttons
+    let typeNormal: Buttons
+    let typeSelected: Buttons
     
     static func getPlayerButtons() -> [PlayerButtons] {
         [
-            PlayerButtons(tag: 0, type: .gobackward),
-            PlayerButtons(tag: 1, type: .backward),
-            PlayerButtons(tag: 2, type: .play),
-            PlayerButtons(tag: 3, type: .forward),
-            PlayerButtons(tag: 4, type: .goforward)
+            PlayerButtons(tag: 0, typeNormal: .gobackward, typeSelected: .gobackward),
+            PlayerButtons(tag: 1, typeNormal: .backward, typeSelected: .backward),
+            PlayerButtons(tag: 2, typeNormal: .play, typeSelected: .pause),
+            PlayerButtons(tag: 3, typeNormal: .forward, typeSelected: .forward),
+            PlayerButtons(tag: 4, typeNormal: .goforward, typeSelected: .goforward)
         ]
     }
 }

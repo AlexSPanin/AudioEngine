@@ -19,16 +19,17 @@ class ButtonPlayerView {
         var buttons: [UIButton] = []
         
         for type in typeButtons {
-            buttons.append(createButton(type: type.type, tint: setting.colorTintPlayerButton, tag: type.tag))
+            buttons.append(createButton(normal: type.typeNormal, selected: type.typeSelected ,  tint: setting.colorTintPlayerButton, tag: type.tag))
         }
         return buttons
     }
   
-    private  func createButton(type: Buttons, tint: UIColor, tag: Int) -> UIButton {
+    private  func createButton(normal: Buttons, selected: Buttons, tint: UIColor, tag: Int) -> UIButton {
         let button = UIButton()
         button.tintColor = tint
         button.tag = tag
-        button.setImage(UIImage(systemName: type.rawValue), for: .normal)
+        button.setImage(UIImage(systemName: normal.rawValue), for: .normal)
+        button.setImage(UIImage(systemName: selected.rawValue), for: .highlighted)
         return button
     }
 }

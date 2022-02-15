@@ -12,16 +12,12 @@ import AVFoundation
 
 class AudioEngineViewController: UIViewController {
     
-    var tag = 4
+    var tag = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
     
     
   
     
-  lazy  var sliderStack: UIStackView = {
-      let stack = SliderEffectView.shared.createSlidersStack(4)
-      return stack
-    }()
-    
+  
     var audioFile: AVAudioFile?
     var engine = AVAudioEngine()
     var player = AVAudioPlayerNode()
@@ -48,12 +44,20 @@ class AudioEngineViewController: UIViewController {
     let music = Music.getMusic()
     let setting = Setting.getSetting()
     var buttonsPlayer: [UIButton] = []
+    var buttonsEffect: [UIButton] = []
+    var labelsEffect: [UILabel] = []
+    var slidersEffect: [UISlider] = []
+    
     var stackPlayer = UIStackView()
+    var stackEffectButton = UIStackView()
+    var stackEffectLabel = UIStackView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         setupButtonsPlayer()
+        setupButtonsEffect()
+        setupLabelEffect()
  //       setupEffectView(tag)
         
     }
@@ -195,9 +199,53 @@ class AudioEngineViewController: UIViewController {
 
 
  //   }
-    
+    @objc func pressEffectButtons(_ sender: UIButton) {
+        
+        let tag = sender.tag
+        clearColorButtonEffect(tag)
+        
+        switch tag {
+        case 0:
+            stackEffectButton.isHidden = true
+            stackEffectLabel.isHidden = true
+            print(tag)
+            
+        case 1:
+            
+            print(tag)
+        case 2:
+            
+            print(tag)
+        case 3:
+            
+            print(tag)
+        case 4:
+            
+            print(tag)
+        default:
+            
+            print(tag)
+        }
+    }
    
-
+    @objc func pressPlayerButtons(_ sender: UIButton) {
+        
+        switch sender.tag {
+        case 0:
+            return
+        case 1:
+            return
+        case 2:
+            playButton()
+        case 3:
+            return
+        case 4:
+            return
+        default:
+            return
+        }
+    }
+    
     
     
     
@@ -259,22 +307,9 @@ class AudioEngineViewController: UIViewController {
 // MARK: - navigation player
 extension AudioEngineViewController {
     
-    @objc func pressPlayerButtons(_ sender: UIButton) {
-        switch sender.tag {
-        case 0:
-            return
-        case 1:
-            return
-        case 2:
-            playButton()
-        case 3:
-            return
-        case 4:
-            return
-        default:
-            return
-        }
-    }
+   
+    
+    //MARK: - setup Buttons for Player
     
     private func setupButtonsPlayer() {
         
@@ -299,9 +334,73 @@ extension AudioEngineViewController {
         stackPlayer.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
     }
     
+    //MARK: - setup Buttons and names for Labels Buttons for Effect
+    
+    private func setupButtonsEffect() {
+        let setting = Setting.getSetting()
+        buttonsEffect = ButtonEffectView.shared.getButtonEffect()
+        
+        for button in buttonsEffect {
+            button.addTarget(self, action: #selector(pressEffectButtons), for: .touchDown)
+        }
+        
+        stackEffectButton = UIStackView(arrangedSubviews: buttonsEffect)
+      
+        stackEffectButton.axis = .horizontal
+        stackEffectButton.spacing = 5
+        stackEffectButton.distribution = UIStackView.Distribution.fillEqually
+        stackEffectButton.backgroundColor = setting.colorBgrnd
+        
+        view.addSubview(stackEffectButton)
+        
+        stackEffectButton.translatesAutoresizingMaskIntoConstraints = false
+       
+        stackEffectButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -15).isActive = true
+        stackEffectButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 15).isActive = true
+        stackEffectButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -100).isActive = true
+    }
+    
+    private func setupLabelEffect() {
+        let setting = Setting.getSetting()
+        labelsEffect = ButtonEffectView.shared.getLabelEffect()
+        stackEffectLabel = UIStackView(arrangedSubviews: labelsEffect)
+      
+        stackEffectLabel.axis = .horizontal
+        stackEffectLabel.spacing = 5
+        stackEffectLabel.distribution = UIStackView.Distribution.fillEqually
+        stackEffectLabel.backgroundColor = setting.colorBgrnd
+        
+        view.addSubview(stackEffectLabel)
+        
+        stackEffectLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        stackEffectLabel.topAnchor.constraint(equalTo: stackEffectButton.bottomAnchor).isActive = true
+        stackEffectLabel.rightAnchor.constraint(equalTo: stackEffectButton.rightAnchor).isActive = true
+        stackEffectLabel.leftAnchor.constraint(equalTo: stackEffectButton.leftAnchor).isActive = true
+    }
+    
+    private func clearColorButtonEffect(_ tag: Int) {
+        let setting = Setting.getSetting()
+        for button in buttonsEffect {
+            button.backgroundColor = button.tag == tag ? setting.colorPressedButtonEffect : setting.colorBgrnd
+            labelsEffect[button.tag].backgroundColor = button.tag == tag ? setting.colorPressedButtonEffect : setting.colorBgrnd
+        }
+    }
+    
     func playOrPause() {
+        
         if needsFileScheduled { scheduleAudioFile() }
-        player.isPlaying ? player.pause() : player.play()
+        if player.isPlaying {
+            player.pause()
+            let image = UIImage(systemName: Buttons.play.rawValue)
+            buttonsPlayer[2].setImage(image, for: .normal)
+        } else {
+            player.play()
+            let image = UIImage(systemName: Buttons.pause.rawValue)
+            buttonsPlayer[2].setImage(image, for: .normal)
+            
+        }
+        
     }
     
     func goForward() {

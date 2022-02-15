@@ -8,95 +8,60 @@
 import UIKit
 
 class ButtonEffectView {
-    private var audioVC = AudioEngineViewController()
+    
     static var shared = ButtonEffectView()
     private init() {}
     
-    @objc func pressEffectButtons(_ sender: UIButton) {
+    func getButtonEffect() -> [UIButton] {
         
-        let tag = sender.tag
-        
-        audioVC.tag = tag
-        
-        
-        switch tag {
-        case 0:
-            sender.backgroundColor = sender.backgroundColor == .gray ? .white : .gray
-        case 1:
-            sender.backgroundColor = sender.backgroundColor == .gray ? .white : .gray
-           
-        case 2:
-            sender.backgroundColor = sender.backgroundColor == .gray ? .white : .gray
-        case 3:
-            sender.backgroundColor = sender.backgroundColor == .gray ? .white : .gray
-        case 4:
-            sender.backgroundColor = sender.backgroundColor == .gray ? .white : .gray
-        default:
-            sender.backgroundColor = sender.backgroundColor == .gray ? .white : .gray
-        }
-    }
-    
-    func createButtonStack() -> UIStackView {
-        let setting = Setting.getSetting()
-        let stack = UIStackView()
         let typeButtons = EffectButtons.getEffectButtons()
-        for type in typeButtons {
-            let button = createButton(
-                type: type.type,
-                tint: setting.colorTint,
-                tag: type.tag
-            )
-            let title = createLabel(
-                title: type.name,
-                font: setting.nameFont,
-                size: setting.smallSize,
-                colorText: setting.colorText,
-                colorBgrnd: setting.colorBgrnd
-            )
-            let tag = type.tag
-            
-            let stackButtonTitle = UIStackView(arrangedSubviews: [button, title])
-            stackButtonTitle.axis = .vertical
-            stackButtonTitle.spacing = 3
-            stackButtonTitle.distribution = UIStackView.Distribution.fillEqually
-            stackButtonTitle.backgroundColor = setting.colorBgrnd
-            
-            stack.insertArrangedSubview(stackButtonTitle, at: tag)
-        }
+        var buttons: [UIButton] = []
         
-        stack.axis = .horizontal
-        stack.spacing = 10
-        stack.distribution = UIStackView.Distribution.fillEqually
-        stack.backgroundColor = setting.colorBgrnd
-        return stack
+        for type in typeButtons {
+            buttons.append(createButton(type: type.type, title: type.name, tag: type.tag))
+        }
+        return buttons
     }
     
-    private func createButton(type: Buttons, tint: UIColor, tag: Int) -> UIButton {
+    private func createButton(type: Buttons, title: String, tag: Int) -> UIButton {
+        let setting = Setting.getSetting()
         let button = UIButton()
-        button.tintColor = tint
+        let image = UIImage(systemName: type.rawValue)
+        
+        button.setImage(image, for: .normal)
+        button.tintColor = tag == 0 ? setting.colorBgrnd : setting.colorTint
+        button.backgroundColor = tag == 0 ? setting.colorBrgndPlayerButton : setting.colorBgrnd
         button.tag = tag
-        button.setImage(UIImage(systemName: type.rawValue), for: .normal)
-        button.addTarget(self, action: #selector(pressEffectButtons), for: .touchDown)
         
         return button
     }
     
-    private func createLabel(
-        title: String, font: String, size: CGFloat,
-        colorText: UIColor, colorBgrnd: UIColor) -> UILabel {
-            
-            let label = UILabel()
-            guard let font = UIFont(name: font, size: size) else {return label }
-            label.font = font
-            label.textColor = colorText
-            label.backgroundColor = colorBgrnd
-            label.minimumScaleFactor = 0.5
-            label.adjustsFontSizeToFitWidth = true
-            label.numberOfLines = 0
-            label.textAlignment = .center
-            label.text = title
-            return label
+    func getLabelEffect() -> [UILabel] {
+        let setting = Setting.getSetting()
+        let typeLabels = EffectButtons.getEffectButtons()
+        var labels: [UILabel] = []
+        
+        for type in typeLabels {
+            labels.append(createLabel(title: type.name, font: setting.nameFont, size: setting.smallSize, tag: type.tag))
         }
+        return labels
+    }
+    
+    private func createLabel(title: String, font: String, size: CGFloat, tag: Int) -> UILabel {
+        let setting = Setting.getSetting()
+        let label = UILabel()
+        guard let font = UIFont(name: font, size: size) else {return label }
+        label.font = font
+        label.textColor = tag == 0 ? setting.colorBgrnd : setting.colorTint
+        label.backgroundColor = tag == 0 ? setting.colorBrgndPlayerButton : setting.colorBgrnd
+        label.minimumScaleFactor = 0.5
+        label.adjustsFontSizeToFitWidth = true
+        label.numberOfLines = 0
+        label.textAlignment = .center
+        label.text = title
+        label.tag  = tag
+        return label
+    }
 }
 
 
