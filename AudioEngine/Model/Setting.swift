@@ -8,15 +8,20 @@
 import UIKit
 
 struct Setting {
+    // font
     let nameFont: String
     let smallSize: CGFloat
     let normalSize: CGFloat
     let largeSize: CGFloat
-    
+    // color
     let colorText: UIColor
     let colorTint: UIColor
     let colorBgrnd: UIColor
     let colorLabel: UIColor
+    let colorBrgndPlayerButton: UIColor
+    let colorTintPlayerButton: UIColor
+    // size
+    let heigthButton: CGFloat
     
     static func getSetting() -> Setting {
         Setting(
@@ -27,7 +32,10 @@ struct Setting {
             colorText: #colorLiteral(red: 0.7450980544, green: 0.1568627506, blue: 0.07450980693, alpha: 1),
             colorTint: #colorLiteral(red: 0.7450980544, green: 0.1568627506, blue: 0.07450980693, alpha: 1),
             colorBgrnd: #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1),
-            colorLabel: #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
+            colorLabel: #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1),
+            colorBrgndPlayerButton: #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1),
+            colorTintPlayerButton: #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1),
+            heigthButton: 30
         )
     }
 }

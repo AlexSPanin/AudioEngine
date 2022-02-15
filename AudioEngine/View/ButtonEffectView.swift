@@ -17,7 +17,7 @@ class ButtonEffectView {
         let tag = sender.tag
         
         audioVC.tag = tag
-        audioVC.reloadUI()
+        
         
         switch tag {
         case 0:

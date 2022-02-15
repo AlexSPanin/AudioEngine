@@ -14,6 +14,9 @@ class AudioEngineViewController: UIViewController {
     
     var tag = 4
     
+    
+  
+    
   lazy  var sliderStack: UIStackView = {
       let stack = SliderEffectView.shared.createSlidersStack(4)
       return stack
@@ -43,12 +46,15 @@ class AudioEngineViewController: UIViewController {
     var valuePitchEffect: Float?
     
     let music = Music.getMusic()
+    let setting = Setting.getSetting()
+    var buttonsPlayer: [UIButton] = []
+    var stackPlayer = UIStackView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setupNavigationViewPlayer()
-        setupEffectView(tag)
+        setupButtonsPlayer()
+ //       setupEffectView(tag)
         
     }
     
@@ -152,11 +158,11 @@ class AudioEngineViewController: UIViewController {
         }
     }
     
-    func reloadUI() {
-   
-        guard let max = self.view.viewWithTag(202) as? UIImageView else { return print("No") }
-        print("Yes")
-        max.tintColor = .gray
+//    func reloadUI() {
+//
+//        guard let max = self.view.viewWithTag(202) as? UIImageView else { return print("No") }
+//        print("Yes")
+//        max.tintColor = .gray
 //        self.view.reloadInputViews()
 //        let slider = stack.subviews[1]
 //        slider.removeFromSuperview()
@@ -188,59 +194,36 @@ class AudioEngineViewController: UIViewController {
 //        let newStack = NavigationEffectView.shared.setupNavigationSliderEffect(tag)
 
 
-    }
+ //   }
+    
+   
+
     
     
     
-    
-    
-    func setupUI(_ tag: Int) {
-          setupEffectView(tag)
-        
-//        setupNavigationButtonEffect()
-//        setupNavigationSlidersEffect(tag)
-        
-        
-    }
-    
-    
-    
-    func setupEffectView(_ tag: Int) {
-        let height = view.bounds.width / 6
-        let button = ButtonEffectView.shared.createButtonStack()
-        button.tag = 30
+//    func setupEffectView(_ tag: Int) {
+//        let height = view.bounds.width / 6
+//        let button = ButtonEffectView.shared.createButtonStack()
+//        button.tag = 30
 //        let slider = SliderEffectView.shared.createSlidersStack(tag)
 //        slider.tag = 20
-        let stack = UIStackView(arrangedSubviews: [button, sliderStack])
-        stack.tag = 40
+//        let stack = UIStackView(arrangedSubviews: [button, sliderStack])
+//        stack.tag = 40
+//
+//
+//        stack.axis = .vertical
+//        stack.spacing = 0
+//        stack.distribution = UIStackView.Distribution.fillProportionally
+//
+//        view.addSubview(stack)
+//        stack.translatesAutoresizingMaskIntoConstraints = false
+//
+//        stack.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
+//        stack.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20).isActive = true
+//        stack.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -height).isActive = true
+//    }
     
-        
-        stack.axis = .vertical
-        stack.spacing = 0
-        stack.distribution = UIStackView.Distribution.fillProportionally
-        
-        view.addSubview(stack)
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        
-        stack.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
-        stack.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20).isActive = true
-        stack.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -height).isActive = true
-    }
-    
-    private func setupNavigationViewPlayer() {
-        let height = view.bounds.width / 8
-        let stack = ButtonPlayerView.shared.setupNavigationPlayer()
-        view.addSubview(stack)
-        stack.tag = 10
-        
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        
-        stack.heightAnchor.constraint(equalToConstant: height).isActive = true
-        stack.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        stack.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        stack.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-    }
-    
+  
 //    func setupNavigationSlidersEffect(_ tag: Int) {
 //        let height = view.bounds.width / 10
 //        let stack = SliderEffectView.shared.createSlidersStack(tag)
@@ -276,6 +259,46 @@ class AudioEngineViewController: UIViewController {
 // MARK: - navigation player
 extension AudioEngineViewController {
     
+    @objc func pressPlayerButtons(_ sender: UIButton) {
+        switch sender.tag {
+        case 0:
+            return
+        case 1:
+            return
+        case 2:
+            playButton()
+        case 3:
+            return
+        case 4:
+            return
+        default:
+            return
+        }
+    }
+    
+    private func setupButtonsPlayer() {
+        
+        let height = view.bounds.width / 8
+        buttonsPlayer = ButtonPlayerView.shared.getButtonsPlayer()
+        for button in buttonsPlayer {
+            button.addTarget(self, action: #selector(pressPlayerButtons), for: .touchDown)
+        }
+        stackPlayer = UIStackView(arrangedSubviews: buttonsPlayer)
+      
+        stackPlayer.axis = .horizontal
+        stackPlayer.spacing = 5
+        stackPlayer.distribution = UIStackView.Distribution.fillEqually
+        stackPlayer.backgroundColor = setting.colorBrgndPlayerButton
+        
+        view.addSubview(stackPlayer )
+        
+        stackPlayer.translatesAutoresizingMaskIntoConstraints = false
+        stackPlayer.heightAnchor.constraint(equalToConstant: height).isActive = true
+        stackPlayer.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        stackPlayer.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        stackPlayer.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+    }
+    
     func playOrPause() {
         if needsFileScheduled { scheduleAudioFile() }
         player.isPlaying ? player.pause() : player.play()
@@ -289,3 +312,5 @@ extension AudioEngineViewController {
         
     }
 }
+
+
