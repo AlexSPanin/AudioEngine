@@ -62,10 +62,10 @@ struct EffectSliderValue {
     static func getEffectSliderValue() -> [EffectSliderValue] {
         [
             EffectSliderValue(tag: 0, type: .exit, count: 1, track: .minimum, value: 0.5, minimum: 0, maximum: 1),
-            EffectSliderValue(tag: 1, type: .volume, count: 1, track: .minimum, value: 0.5, minimum: 0, maximum: 1),
-            EffectSliderValue(tag: 2, type: .eq, count: 1, track: .maximum, value: 1, minimum: 0, maximum: 2),
-            EffectSliderValue(tag: 3, type: .reverb, count: 1, track: .minimum, value: 1, minimum: 0, maximum: 2),
-            EffectSliderValue(tag: 4, type: .delay, count: 1, track: .minimum, value: 1, minimum: 0, maximum: 2)
+            EffectSliderValue(tag: 1, type: .volume, count: 1, track: .minimum, value: 0.1, minimum: 0, maximum: 1),
+            EffectSliderValue(tag: 2, type: .eq, count: 1, track: .maximum, value: 3, minimum: 0.05, maximum: 5),
+            EffectSliderValue(tag: 3, type: .reverb, count: 1, track: .minimum, value: 3, minimum: 0, maximum: 6),
+            EffectSliderValue(tag: 4, type: .delay, count: 1, track: .minimum, value: 0, minimum: 0, maximum: 2)
         ]
     }
 }

@@ -23,7 +23,7 @@ class AudioEngineViewController: UIViewController {
     let reverb = AVAudioUnitReverb()
     let delayEcho = AVAudioUnitDelay()
     let audioPlayerNode = AVAudioPlayerNode()
-    let equalizer = AVAudioUnitEQ(numberOfBands: 2)
+    let equalizer = AVAudioUnitEQ(numberOfBands: 1)
     
     
     
@@ -83,44 +83,72 @@ class AudioEngineViewController: UIViewController {
         
         setupColorButtonPressedEffect(tag)
         
+        setupEffectValue()
+        setupAudio(music[0])
+        
     }
     
-    func setupSlidersValue() {
-        let slidersValueEffect = EffectSliderValue.getEffectSliderValue()
-        for slider in slidersValueEffect {
-            sliderValue.append(slider.value)
-        }
-    }
-    
+  
     @objc func turnEffectSlider(_ sender: UISlider) {
         sliderValue[tag] = sender.value
         print(sender.value)
-        
-        
+        setupEffectValue()
     }
     
 
     func playButton() {
-//        pitchEffect.pitch = valuePitchEffect ?? 0
-        setupAudio(music[1])
+        
         playOrPause()
     }
-
     
-    func editingReverb(_ slider: UISlider) {
-        reverb.loadFactoryPreset(.cathedral)
+    func setupEffectValue() {
+        equalizer.globalGain = 0
+        let bands = equalizer.bands
+        bands[0].filterType = .bandPass
+        bands[0].frequency = 5000
+        
+        
+            editingVolume(sliderValue[1])
+            editingEQ(sliderValue[2])
+            editingReverb(sliderValue[3])
+            editingDelay(sliderValue[4])
         
     }
     
-    func editingEQ(left: UISlider, rigth: UISlider) {
-        
-        equalizer.globalGain = 0
+    
+    
+    func editingVolume(_ value: Float) {
+        audioPlayerNode.volume = value
+    }
+    
+    
+    func editingDelay(_ value: Float) {
+        delayEcho.delayTime = Double(value)
+    }
+    
+    func editingReverb(_ value: Float) {
+        let index = Int(round(value + 0.5))
+        switch index {
+        case 0:
+            reverb.loadFactoryPreset(.smallRoom)
+        case 1:
+            reverb.loadFactoryPreset(.mediumRoom)
+        case 2:
+            reverb.loadFactoryPreset(.largeRoom)
+        case 3:
+            reverb.loadFactoryPreset(.mediumHall)
+        case 4:
+            reverb.loadFactoryPreset(.plate)
+        case 5:
+            reverb.loadFactoryPreset(.mediumChamber)
+        default:
+            reverb.loadFactoryPreset(.cathedral)
+        }
+    }
+    
+    func editingEQ(_ value: Float) {
         let bands = equalizer.bands
-        bands[0].filterType = .lowPass
-        bands[0].frequency = left.value
-        bands[1].filterType = .highPass
-        bands[1].frequency = rigth.value
-        
+        bands[0].bandwidth = value
     }
     
     func setupAudio(_ music: Music) {
@@ -150,7 +178,18 @@ class AudioEngineViewController: UIViewController {
         audioEngine.attach(audioMixer)
         audioEngine.attach(micMixer)
         
+        audioEngine.connect(audioPlayerNode, to: equalizer, format: format)
+        audioEngine.connect(audioPlayerNode, to: reverb, format: format)
+        audioEngine.connect(audioPlayerNode, to: delayEcho, format: format)
+        audioEngine.connect(equalizer, to: audioMixer, format: format)
+        audioEngine.connect(reverb, to: audioMixer, format: format)
+        audioEngine.connect(delayEcho, to: audioMixer, format: format)
+        audioEngine.connect(audioMixer, to: audioEngine.outputNode, format: format)
+        
+        
+      /*
         // Connect the nodes
+        
         audioEngine.connect(audioMixer, to: audioEngine.mainMixerNode, format: format)
         audioEngine.connect(delayEcho, to: audioMixer, fromBus: 0, toBus: 0, format: format)
         audioEngine.connect(reverb, to: audioMixer, fromBus: 0, toBus: 0, format: format)
@@ -160,17 +199,19 @@ class AudioEngineViewController: UIViewController {
         // Здесь мы делаем несколько выходных соединений с узла плеера
         // 1) с основным микшером и
         // 2) с другим узлом микшера, который мы используем для добавления эффектов.
-        let playerConnectionPoints = [
+       let playerConnectionPoints = [
             AVAudioConnectionPoint(node: audioEngine.mainMixerNode, bus: 0),
             AVAudioConnectionPoint(node: audioMixer, bus: 1)
-        ]
+      ]
         
-        audioEngine.connect(audioPlayerNode, to: playerConnectionPoints, fromBus: 0, format: format)
+       audioEngine.connect(audioPlayerNode, to: playerConnectionPoints, fromBus: 0, format: format)
         
         // Наконец-то установление соединения для микрофонного входа
         let micInput = audioEngine.inputNode
         let micFormat = micInput.inputFormat(forBus: 0)
         audioEngine.connect(micInput, to: micMixer, format: micFormat)
+      */
+        
         
         audioEngine.prepare()
         
@@ -203,6 +244,7 @@ class AudioEngineViewController: UIViewController {
             let image = UIImage(systemName: Buttons.play.rawValue)
             buttonsPlayer[2].setImage(image, for: .normal)
         } else {
+            
             audioPlayerNode.play()
             let image = UIImage(systemName: Buttons.pause.rawValue)
             buttonsPlayer[2].setImage(image, for: .normal)
@@ -210,24 +252,16 @@ class AudioEngineViewController: UIViewController {
         }
         
     }
-    private func setupColorButtonPressedEffect(_ tag: Int) {
-        clearColorButtonEffect(tag)
-        сhangingSettingSliderEffect(tag)
-        сhangingSettingLabelEffect(tag)
-        сhangingSettingImageEffect(tag)
-    }
+    
     
     @objc func pressEffectButtons(_ sender: UIButton) {
         
         tag = sender.tag
         setupColorButtonPressedEffect(tag)
         
-        
         switch tag {
         case 0:
-            stackEffectButton.isHidden = true
-            stackEffectLabel.isHidden = true
-            slidersEffect.isHidden = true
+            hiddenEffectView()
         default:
             return
         }
@@ -251,13 +285,6 @@ class AudioEngineViewController: UIViewController {
         }
     }
     
-    
-   
-
-    
-    
-    
-   
 }
 
 
@@ -291,21 +318,6 @@ extension AudioEngineViewController {
         stackEffect.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 15).isActive = true
         stackEffect.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -15).isActive = true
         stackEffect.bottomAnchor.constraint(equalTo: stackPlayer.topAnchor).isActive = true
-        
-        
-//        stackEffectLabel.axis = .horizontal
-//        stackEffectLabel.spacing = 5
-//        stackEffectLabel.distribution = UIStackView.Distribution.fill
-//        stackEffectLabel.backgroundColor = setting.colorBgrnd
-//
-//
-//
-//        view.addSubview(stackEffectSlider)
-//
-//        stackEffectSlider.heightAnchor.constraint(equalToConstant: 50).isActive = true
-//        stackEffectSlider.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -15).isActive = true
-//        stackEffectSlider.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 15).isActive = true
-//        stackEffectSlider.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -55).isActive = true
     }
  
     //MARK: - анимация кнопок переключения эффектов
@@ -430,6 +442,26 @@ extension AudioEngineViewController {
         stackEffectLabel.leftAnchor.constraint(equalTo: stackEffectButton.leftAnchor).isActive = true
     }
     
+    private func setupColorButtonPressedEffect(_ tag: Int) {
+        clearColorButtonEffect(tag)
+        сhangingSettingSliderEffect(tag)
+        сhangingSettingLabelEffect(tag)
+        сhangingSettingImageEffect(tag)
+    }
+    
+    private func hiddenEffectView() {
+        stackEffectButton.isHidden = true
+        stackEffectLabel.isHidden = true
+        slidersEffect.isHidden = true
+    }
+    
+    private  func setupSlidersValue() {
+          let slidersValueEffect = EffectSliderValue.getEffectSliderValue()
+          for slider in slidersValueEffect {
+              sliderValue.append(slider.value)
+          }
+      }
+      
     
     // MARK: - navigation player
   
