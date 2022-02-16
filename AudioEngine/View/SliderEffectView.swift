@@ -8,52 +8,41 @@
 import UIKit
 
 class SliderEffectView {
- 
-    private let stack = UIStackView()
-    private var audioVC = AudioEngineViewController()
     
     static var shared = SliderEffectView()
-    
     private init() {}
     
-    
-    
-    func createSlidersStack(_ tag: Int) -> UIStackView {
-        let setting = Setting.getSetting()
-        
-        var slider = UISlider()
-        var stackLabel = UIStackView()
-        var stack = UIStackView()
-        
-        switch tag {
-            
-        case 0:
-            return stack
-        case 1:
-            slider = volumeSlider()
-            stackLabel = volumeLabel(
-                font: setting.nameFont, size: setting.normalSize,
-                colorText: setting.colorLabel, colorBgrnd: setting.colorBgrnd)
-            let stackSlider = UIStackView(arrangedSubviews: [stackLabel, slider])
-            stack = stackSlider
-        default:
-            slider = delaySlider()
-            stackLabel = createImageSliderStack(tag: tag, colorTint: setting.colorTint, colorBgrnd: setting.colorBgrnd)
-            let stackSlider = UIStackView(arrangedSubviews: [slider, stackLabel])
-            stack = stackSlider
-        }
-        
-        slider.thumbTintColor = setting.colorBgrnd
-        slider.minimumTrackTintColor = setting.colorTint
-        slider.isContinuous = true
-        
-        stack.axis = .vertical
-        stack.spacing = 0
-        stack.distribution = UIStackView.Distribution.fillEqually
-        stack.backgroundColor = setting.colorBgrnd
-        
-        return stack
+    func getSlidersEffect(_ tag: Int) -> UISlider {
+        let typeSliders = EffectSliderValue.getEffectSliderValue()
+        guard let index = typeSliders.firstIndex(where: { $0.tag == tag }) else { return UISlider() }
+        let type = typeSliders[index]
+        let slider = createSlider(tag: type.tag ,track: type.track, value: type.value, minimum: type.minimum, maximum: type.maximum)
+        return slider
     }
+    
+    private func createSlider(tag: Int, track: SideTrack, value: Float, minimum: Float, maximum: Float) -> UISlider {
+        let setting = Setting.getSetting()
+        let slider = UISlider()
+        slider.tag = tag
+        slider.minimumValue = minimum
+        slider.maximumValue = maximum
+        slider.value = value
+        slider.thumbTintColor = setting.colorBgrnd
+        
+        if track == .maximum {
+            slider.maximumTrackTintColor = setting.colorTint
+            slider.minimumTrackTintColor = setting.colorBgrnd
+        } else {
+            slider.minimumTrackTintColor = setting.colorTint
+            slider.maximumTrackTintColor = setting.colorBgrnd
+        }
+        slider.isContinuous = true
+       
+        return slider
+    }
+    
+    
+    
     
     // функция подготовки надписи
   func createLabel(
@@ -137,24 +126,20 @@ func volumeLabel(font: String, size: CGFloat, colorText: UIColor, colorBgrnd: UI
     }
 }
 
-
-// MARK: - slider parametrs
-extension SliderEffectView {
-    
-    private func volumeSlider() -> UISlider {
-        let slider = UISlider()
-        slider.minimumValue = 0
-        slider.maximumValue = 50
-        slider.value = 20
-        return slider
-    }
-    
-    private func delaySlider() -> UISlider {
-        let slider = UISlider()
-        slider.minimumValue = 0
-        slider.maximumValue = 2
-        slider.value = 1
-        return slider
-    }
-    
-}
+//        switch tag {
+//
+//        case 0:
+//            return stack
+//        case 1:
+//            slider = volumeSlider()
+//            stackLabel = volumeLabel(
+//                font: setting.nameFont, size: setting.normalSize,
+//                colorText: setting.colorLabel, colorBgrnd: setting.colorBgrnd)
+//            let stackSlider = UIStackView(arrangedSubviews: [stackLabel, slider])
+//            stack = stackSlider
+//        default:
+//            slider = delaySlider()
+//            stackLabel = createImageSliderStack(tag: tag, colorTint: setting.colorTint, colorBgrnd: setting.colorBgrnd)
+//            let stackSlider = UIStackView(arrangedSubviews: [slider, stackLabel])
+//            stack = stackSlider
+//        }

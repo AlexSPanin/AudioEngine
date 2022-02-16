@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import simd
+
 
 enum Buttons: String, CaseIterable {
     case play = "play"
@@ -57,21 +57,5 @@ struct EffectButtons {
     }
 }
 
-struct EffectSliderImage {
-    
-    let tag: Int
-    let type: Buttons
-    let minImage: String
-    let maxImage: String
-    
-    static func getEffectSliderImage() -> [EffectSliderImage] {
-        [
-            EffectSliderImage(tag: 0, type: .exit, minImage: "", maxImage: ""),
-            EffectSliderImage(tag: 1, type: .volume, minImage: "", maxImage: ""),
-            EffectSliderImage(tag: 2, type: .eq, minImage: "slider.vertical.3", maxImage: "slider.vertical.3"),
-            EffectSliderImage(tag: 3, type: .reverb, minImage: "camera.metering.multispot", maxImage: "camera.metering.multispot"),
-            EffectSliderImage(tag: 4, type: .delay, minImage: "antenna.radiowaves.left.and.right.slash", maxImage: "antenna.radiowaves.left.and.right")
-        ]
-    }
-}
+
 

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E21D41E827BCE7F700161C7C /* Sliders.swift in Sources */ = {isa = PBXBuildFile; fileRef = E21D41E727BCE7F700161C7C /* Sliders.swift */; };
 		E24A8A1A27AAAD64008B297E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24A8A1927AAAD64008B297E /* AppDelegate.swift */; };
 		E24A8A1C27AAAD64008B297E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24A8A1B27AAAD64008B297E /* SceneDelegate.swift */; };
 		E24A8A2127AAAD64008B297E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E24A8A1F27AAAD64008B297E /* Main.storyboard */; };
@@ -24,6 +25,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E21D41E727BCE7F700161C7C /* Sliders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sliders.swift; sourceTree = "<group>"; };
 		E24A8A1627AAAD64008B297E /* AudioEngine.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AudioEngine.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E24A8A1927AAAD64008B297E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E24A8A1B27AAAD64008B297E /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -125,6 +127,7 @@
 				E2F61F6427B7FB0D006D6A7A /* Music.swift */,
 				E2F61F6A27B926CD006D6A7A /* Buttons.swift */,
 				E252CDD927BAAE7700318B20 /* Setting.swift */,
+				E21D41E727BCE7F700161C7C /* Sliders.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -212,6 +215,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E21D41E827BCE7F700161C7C /* Sliders.swift in Sources */,
 				E2F61F6B27B926CD006D6A7A /* Buttons.swift in Sources */,
 				E24A8A1A27AAAD64008B297E /* AppDelegate.swift in Sources */,
 				E24A8A2E27AAAFA8008B297E /* AudioEngineViewController.swift in Sources */,

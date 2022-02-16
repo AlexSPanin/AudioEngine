@@ -12,10 +12,16 @@ import AVFoundation
 
 class AudioEngineViewController: UIViewController {
     
-    var tag = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
-    
-    
   
+    
+//   var tag: Int = 1 {
+//        didSet {
+//          print(tag)
+//     shangingSettingSliderEffect(tag)
+//
+//
+//        }
+//    }
     
   
     var audioFile: AVAudioFile?
@@ -43,22 +49,28 @@ class AudioEngineViewController: UIViewController {
     
     let music = Music.getMusic()
     let setting = Setting.getSetting()
+    
+    
+   // элементы интерфейса
     var buttonsPlayer: [UIButton] = []
     var buttonsEffect: [UIButton] = []
     var labelsEffect: [UILabel] = []
-    var slidersEffect: [UISlider] = []
+    var slidersEffect = UISlider()
     
     var stackPlayer = UIStackView()
     var stackEffectButton = UIStackView()
     var stackEffectLabel = UIStackView()
+    var stackEffectSlider = UIStackView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         setupButtonsPlayer()
+        
         setupButtonsEffect()
         setupLabelEffect()
- //       setupEffectView(tag)
+        setupSladerEffect(1)
+ 
         
     }
     
@@ -203,28 +215,14 @@ class AudioEngineViewController: UIViewController {
         
         let tag = sender.tag
         clearColorButtonEffect(tag)
+        shangingSettingSliderEffect(tag)
         
         switch tag {
         case 0:
             stackEffectButton.isHidden = true
             stackEffectLabel.isHidden = true
-            print(tag)
-            
-        case 1:
-            
-            print(tag)
-        case 2:
-            
-            print(tag)
-        case 3:
-            
-            print(tag)
-        case 4:
-            
-            print(tag)
         default:
-            
-            print(tag)
+            return
         }
     }
    
@@ -247,57 +245,7 @@ class AudioEngineViewController: UIViewController {
     }
     
     
-    
-    
-//    func setupEffectView(_ tag: Int) {
-//        let height = view.bounds.width / 6
-//        let button = ButtonEffectView.shared.createButtonStack()
-//        button.tag = 30
-//        let slider = SliderEffectView.shared.createSlidersStack(tag)
-//        slider.tag = 20
-//        let stack = UIStackView(arrangedSubviews: [button, sliderStack])
-//        stack.tag = 40
-//
-//
-//        stack.axis = .vertical
-//        stack.spacing = 0
-//        stack.distribution = UIStackView.Distribution.fillProportionally
-//
-//        view.addSubview(stack)
-//        stack.translatesAutoresizingMaskIntoConstraints = false
-//
-//        stack.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
-//        stack.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20).isActive = true
-//        stack.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -height).isActive = true
-//    }
-    
-  
-//    func setupNavigationSlidersEffect(_ tag: Int) {
-//        let height = view.bounds.width / 10
-//        let stack = SliderEffectView.shared.createSlidersStack(tag)
-//        stack.tag = 30
-//        effectView.addSubview(stack)
-//
-//        stack.translatesAutoresizingMaskIntoConstraints = false
-//        stack.heightAnchor.constraint(equalToConstant: height).isActive = true
-//        stack.leftAnchor.constraint(equalTo: effectView.leftAnchor, constant: 20).isActive = true
-//        stack.rightAnchor.constraint(equalTo: effectView.rightAnchor, constant: -20).isActive = true
-//        stack.topAnchor.constraint(equalTo: effectView.topAnchor, constant: 2 * height).isActive = true
-//    }
-//
-//    func setupNavigationButtonEffect() {
-//        let height = view.bounds.width / 10
-//        let stack = ButtonEffectView.shared.createButtonStack()
-//        stack.tag = 20
-//        effectView.addSubview(stack)
-//
-//        stack.translatesAutoresizingMaskIntoConstraints = false
-//
-//        stack.heightAnchor.constraint(equalToConstant: height).isActive = true
-//        stack.leftAnchor.constraint(equalTo: effectView.leftAnchor, constant: 15).isActive = true
-//        stack.rightAnchor.constraint(equalTo: effectView.rightAnchor, constant: -15).isActive = true
-//        stack.topAnchor.constraint(equalTo: effectView.topAnchor, constant: 15).isActive = true
-//    }
+
     
     
     
@@ -379,6 +327,33 @@ extension AudioEngineViewController {
         stackEffectLabel.leftAnchor.constraint(equalTo: stackEffectButton.leftAnchor).isActive = true
     }
     
+    private func setupSladerEffect(_ tag: Int) {
+        slidersEffect = SliderEffectView.shared.getSlidersEffect(tag)
+        
+        
+        view.addSubview(slidersEffect)
+        
+        slidersEffect.translatesAutoresizingMaskIntoConstraints = false
+        slidersEffect.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 15).isActive = true
+        slidersEffect.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -15).isActive = true
+        slidersEffect.bottomAnchor.constraint(equalTo: stackPlayer.topAnchor).isActive = true
+        
+        
+//        stackEffectLabel.axis = .horizontal
+//        stackEffectLabel.spacing = 5
+//        stackEffectLabel.distribution = UIStackView.Distribution.fill
+//        stackEffectLabel.backgroundColor = setting.colorBgrnd
+//
+//
+//
+//        view.addSubview(stackEffectSlider)
+//
+//        stackEffectSlider.heightAnchor.constraint(equalToConstant: 50).isActive = true
+//        stackEffectSlider.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -15).isActive = true
+//        stackEffectSlider.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 15).isActive = true
+//        stackEffectSlider.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -55).isActive = true
+    }
+    
     private func clearColorButtonEffect(_ tag: Int) {
         let setting = Setting.getSetting()
         for button in buttonsEffect {
@@ -388,6 +363,35 @@ extension AudioEngineViewController {
             }
         }
     }
+    
+    private func shangingSettingSliderEffect(_ tag: Int) {
+        let typeSliders = EffectSliderValue.getEffectSliderValue()
+        let setting = Setting.getSetting()
+        guard let index = typeSliders.firstIndex(where: { $0.tag == tag }) else { return }
+        let type = typeSliders[index]
+        
+        
+        slidersEffect.minimumValue = type.minimum
+        slidersEffect.maximumValue = type.maximum
+        slidersEffect.value = type.value
+        slidersEffect.thumbTintColor = setting.colorBgrnd
+        
+        if type.track == .maximum {
+            slidersEffect.maximumTrackTintColor = setting.colorTint
+            slidersEffect.minimumTrackTintColor = setting.colorBgrnd
+        } else {
+            slidersEffect.minimumTrackTintColor = setting.colorTint
+            slidersEffect.maximumTrackTintColor = setting.colorBgrnd
+        }
+        slidersEffect.isContinuous = true
+    }
+    
+    
+    
+    
+    
+    
+    
     
     func playOrPause() {
         
