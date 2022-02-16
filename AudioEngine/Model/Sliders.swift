@@ -31,6 +31,24 @@ struct EffectSliderImage {
     }
 }
 
+struct EffectSliderLabel {
+    
+    let tag: Int
+    let type: Buttons
+    let minLabel: String
+    let maxLabel: String
+    
+    static func getEffectSliderLabel() -> [EffectSliderLabel] {
+        [
+            EffectSliderLabel(tag: 0, type: .exit, minLabel: "", maxLabel: ""),
+            EffectSliderLabel(tag: 1, type: .volume, minLabel: "0 ДБ", maxLabel: "50 ДБ"),
+            EffectSliderLabel(tag: 2, type: .eq, minLabel: "", maxLabel: ""),
+            EffectSliderLabel(tag: 3, type: .reverb, minLabel: "", maxLabel: ""),
+            EffectSliderLabel(tag: 4, type: .delay, minLabel: "", maxLabel: "")
+        ]
+    }
+}
+
 struct EffectSliderValue {
     let tag: Int
     let type: Buttons
@@ -43,7 +61,8 @@ struct EffectSliderValue {
     
     static func getEffectSliderValue() -> [EffectSliderValue] {
         [
-            EffectSliderValue(tag: 1, type: .volume, count: 1, track: .minimum, value: 20, minimum: 0, maximum: 50),
+            EffectSliderValue(tag: 0, type: .exit, count: 1, track: .minimum, value: 0.5, minimum: 0, maximum: 1),
+            EffectSliderValue(tag: 1, type: .volume, count: 1, track: .minimum, value: 0.5, minimum: 0, maximum: 1),
             EffectSliderValue(tag: 2, type: .eq, count: 1, track: .maximum, value: 1, minimum: 0, maximum: 2),
             EffectSliderValue(tag: 3, type: .reverb, count: 1, track: .minimum, value: 1, minimum: 0, maximum: 2),
             EffectSliderValue(tag: 4, type: .delay, count: 1, track: .minimum, value: 1, minimum: 0, maximum: 2)

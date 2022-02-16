@@ -12,29 +12,20 @@ import AVFoundation
 
 class AudioEngineViewController: UIViewController {
     
-  
     
-//   var tag: Int = 1 {
-//        didSet {
-//          print(tag)
-//     shangingSettingSliderEffect(tag)
-//
-//
-//        }
-//    }
+    
     
   
     var audioFile: AVAudioFile?
-    var engine = AVAudioEngine()
-    var player = AVAudioPlayerNode()
+    let audioEngine = AVAudioEngine()
+    let audioMixer = AVAudioMixerNode()
+    let micMixer = AVAudioMixerNode()
+    let reverb = AVAudioUnitReverb()
+    let delayEcho = AVAudioUnitDelay()
+    let audioPlayerNode = AVAudioPlayerNode()
+    let equalizer = AVAudioUnitEQ(numberOfBands: 2)
     
-    var pitchEffect = AVAudioUnitTimePitch()
     
-    var reverbEffect = AVAudioUnitReverb()
-    var delayEffect = AVAudioUnitDelay()
-    
-    var eqEffect = AVAudioUnitEQ(numberOfBands: 2)
-    var mixMode = AVAudioMixerNode()
     
     var audioLengthSamples: Int?
     var audioSampleRate: Double?
@@ -45,7 +36,7 @@ class AudioEngineViewController: UIViewController {
     var needsFileScheduled = true
     var seekFrame: Double?
     
-    var valuePitchEffect: Float?
+    
     
     let music = Music.getMusic()
     let setting = Setting.getSetting()
@@ -56,46 +47,58 @@ class AudioEngineViewController: UIViewController {
     var buttonsEffect: [UIButton] = []
     var labelsEffect: [UILabel] = []
     var slidersEffect = UISlider()
+    var slidersTextEffect: [UILabel] = []
+    var slidersImageEffect: [UIImageView] = []
     
     var stackPlayer = UIStackView()
     var stackEffectButton = UIStackView()
     var stackEffectLabel = UIStackView()
     var stackEffectSlider = UIStackView()
+    var stackEffectText = UIStackView()
+    var stackEffectImage = UIStackView()
+    var stackEffect = UIStackView()
+    
+    
+    // управление слайдерами
+    var sliderValue: [Float] = []
+    var tag: Int = 1 {
+        didSet {
+            print(tag)
+        }
+    }
+    
+    
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        setupButtonsPlayer()
         
+        setupSlidersValue()
+        
+        setupButtonsPlayer()
+        setupSladerEffect(tag)
         setupButtonsEffect()
         setupLabelEffect()
-        setupSladerEffect(1)
- 
+        
+        setupColorButtonPressedEffect(tag)
         
     }
     
-    @IBAction func doSomething(sender: UISlider) {
-        printContent(sender.value)
+    func setupSlidersValue() {
+        let slidersValueEffect = EffectSliderValue.getEffectSliderValue()
+        for slider in slidersValueEffect {
+            sliderValue.append(slider.value)
+        }
+    }
+    
+    @objc func turnEffectSlider(_ sender: UISlider) {
+        sliderValue[tag] = sender.value
+        print(sender.value)
+        
         
     }
     
-
-//    override func viewWillLayoutSubviews() {
-//            print("DidLay ", tag)
-//        }
-//
-//
-//    override func viewWillAppear(_ animated: Bool) {
-//            super.viewWillAppear(true)
-//
-//        print("viewApp ", tag)
-//
-//        }
-
-    @IBAction func pitchSlider(_ sender: UISlider) {
-        editingPitch(sender)
-        
-    }
 
     func playButton() {
 //        pitchEffect.pitch = valuePitchEffect ?? 0
@@ -104,41 +107,75 @@ class AudioEngineViewController: UIViewController {
     }
 
     
-    func editingPitch(_ slider: UISlider) {
-        valuePitchEffect = slider.value
-        pitchEffect.pitch = valuePitchEffect ?? 0
-    }
-    
     func editingReverb(_ slider: UISlider) {
-        reverbEffect.loadFactoryPreset(.cathedral)
+        reverb.loadFactoryPreset(.cathedral)
         
     }
     
     func editingEQ(left: UISlider, rigth: UISlider) {
         
-        eqEffect.globalGain = 0
-        let bands = eqEffect.bands
+        equalizer.globalGain = 0
+        let bands = equalizer.bands
         bands[0].filterType = .lowPass
         bands[0].frequency = left.value
         bands[1].filterType = .highPass
         bands[1].frequency = rigth.value
         
-        
+    }
+    
+    func setupAudio(_ music: Music) {
+        guard let url = Bundle.main.url(forResource: music.name, withExtension: music.format) else { return }
+        do {
+            let file = try AVAudioFile(forReading: url)
+            let format = file.processingFormat
+            
+            audioLengthSamples = Int(file.length)
+            audioSampleRate = format.sampleRate
+            audioLengthSeconds = Double(audioLengthSamples ?? 0) / (audioSampleRate ?? 1)
+            audioFile = file
+            
+            configureEngine(format)
+            
+        } catch {
+            print("error Setup Audio")
+        }
     }
     
     func configureEngine(_ format: AVAudioFormat) {
+        // Attach the nodes
+        audioEngine.attach(audioPlayerNode)
+        audioEngine.attach(equalizer)
+        audioEngine.attach(reverb)
+        audioEngine.attach(delayEcho)
+        audioEngine.attach(audioMixer)
+        audioEngine.attach(micMixer)
         
-            engine.attach(player)
-    //        engine.attach(eqEffect)
+        // Connect the nodes
+        audioEngine.connect(audioMixer, to: audioEngine.mainMixerNode, format: format)
+        audioEngine.connect(delayEcho, to: audioMixer, fromBus: 0, toBus: 0, format: format)
+        audioEngine.connect(reverb, to: audioMixer, fromBus: 0, toBus: 0, format: format)
+        audioEngine.connect(equalizer, to: audioMixer, fromBus: 0, toBus: 0, format: format)
+        audioEngine.connect(micMixer, to: reverb, format: format)
         
-            
-  //          engine.connect(player, to: eqEffect, format: nil)
-            engine.connect(player, to: engine.outputNode, format: format)
-            
-            engine.prepare()
+        // Здесь мы делаем несколько выходных соединений с узла плеера
+        // 1) с основным микшером и
+        // 2) с другим узлом микшера, который мы используем для добавления эффектов.
+        let playerConnectionPoints = [
+            AVAudioConnectionPoint(node: audioEngine.mainMixerNode, bus: 0),
+            AVAudioConnectionPoint(node: audioMixer, bus: 1)
+        ]
+        
+        audioEngine.connect(audioPlayerNode, to: playerConnectionPoints, fromBus: 0, format: format)
+        
+        // Наконец-то установление соединения для микрофонного входа
+        let micInput = audioEngine.inputNode
+        let micFormat = micInput.inputFormat(forBus: 0)
+        audioEngine.connect(micInput, to: micMixer, format: micFormat)
+        
+        audioEngine.prepare()
         
         do {
-            try engine.start()
+            try audioEngine.start()
             scheduleAudioFile()
             isPlayerReady = true
         } catch {
@@ -151,76 +188,46 @@ class AudioEngineViewController: UIViewController {
         
         needsFileScheduled = false
         seekFrame = 0
-        player.scheduleFile(file, at: nil) {
+        audioPlayerNode.scheduleFile(file, at: nil) {
             self.needsFileScheduled = true
         }
     }
     
-    func setupAudio(_ music: Music) {
-        guard let url = Bundle.main.url(forResource: music.name, withExtension: music.format) else { return }
-        do {
-            let file = try AVAudioFile(forReading: url)
-            let format = file.processingFormat
+    
+    
+    func playOrPause() {
+        
+        if needsFileScheduled { scheduleAudioFile() }
+        if audioPlayerNode.isPlaying {
+            audioPlayerNode.pause()
+            let image = UIImage(systemName: Buttons.play.rawValue)
+            buttonsPlayer[2].setImage(image, for: .normal)
+        } else {
+            audioPlayerNode.play()
+            let image = UIImage(systemName: Buttons.pause.rawValue)
+            buttonsPlayer[2].setImage(image, for: .normal)
             
-            audioLengthSamples = Int(file.length)
-            audioSampleRate = format.sampleRate
-            audioLengthSeconds = Double(audioLengthSamples ?? 0) / (audioSampleRate ?? 1)
-            
-            audioFile = file
-            configureEngine(format)
-            
-        } catch {
-            print("error Setup Audio")
         }
+        
+    }
+    private func setupColorButtonPressedEffect(_ tag: Int) {
+        clearColorButtonEffect(tag)
+        сhangingSettingSliderEffect(tag)
+        сhangingSettingLabelEffect(tag)
+        сhangingSettingImageEffect(tag)
     }
     
-//    func reloadUI() {
-//
-//        guard let max = self.view.viewWithTag(202) as? UIImageView else { return print("No") }
-//        print("Yes")
-//        max.tintColor = .gray
-//        self.view.reloadInputViews()
-//        let slider = stack.subviews[1]
-//        slider.removeFromSuperview()
-//        slider.reloadInputViews()
-//        print(stack.subviews.count)
-//        stack.addArrangedSubview(SliderEffectView.shared.createSlidersStack(tag))
-//        print(stack.subviews.count)
-//
-//
-    
-
-        
-        
-  //          viewWithTag.removeFromSuperview()
-        
-//        viewDidLayoutSubviews()
-//        let effect = view.subviews[1]
-//        effect.removeFromSuperview()
-//
-//        view.reloadInputViews()
-  
- //       setupUI(tag)
-        
- //       view.reloadInputViews()
-//        let view = view.subviews.count
-//
-//        let stack = sliderEffectStack?.arrangedSubviews.count
-//        print(view)
-//        let newStack = NavigationEffectView.shared.setupNavigationSliderEffect(tag)
-
-
- //   }
     @objc func pressEffectButtons(_ sender: UIButton) {
         
-        let tag = sender.tag
-        clearColorButtonEffect(tag)
-        shangingSettingSliderEffect(tag)
+        tag = sender.tag
+        setupColorButtonPressedEffect(tag)
+        
         
         switch tag {
         case 0:
             stackEffectButton.isHidden = true
             stackEffectLabel.isHidden = true
+            slidersEffect.isHidden = true
         default:
             return
         }
@@ -245,6 +252,7 @@ class AudioEngineViewController: UIViewController {
     }
     
     
+   
 
     
     
@@ -252,10 +260,105 @@ class AudioEngineViewController: UIViewController {
    
 }
 
-// MARK: - navigation player
+
 extension AudioEngineViewController {
     
-   
+    private func setupSladerEffect(_ tag: Int) {
+        slidersEffect = SliderEffectView.shared.getSlidersEffect(tag)
+        slidersEffect.addTarget(self, action: #selector(turnEffectSlider), for: .allTouchEvents)
+    
+        slidersTextEffect = SliderEffectView.shared.getLabelsEffect(tag)
+        stackEffectText = UIStackView(arrangedSubviews: slidersTextEffect)
+        stackEffectText.axis = .horizontal
+        stackEffectText.spacing = 0
+        stackEffectText.distribution = UIStackView.Distribution.fillEqually
+        
+        slidersImageEffect = SliderEffectView.shared.getImagesEffect(tag)
+        stackEffectImage = UIStackView(arrangedSubviews: slidersImageEffect)
+        stackEffectImage.axis = .horizontal
+        stackEffectImage.spacing = 0
+        stackEffectImage.distribution = UIStackView.Distribution.fillEqually
+        
+        stackEffect = UIStackView(arrangedSubviews: [stackEffectText, slidersEffect, stackEffectImage])
+        
+        stackEffect.axis = .vertical
+        stackEffect.spacing = 0
+        stackEffect.distribution = UIStackView.Distribution.fillEqually
+        
+        view.addSubview(stackEffect)
+        
+        stackEffect.translatesAutoresizingMaskIntoConstraints = false
+        stackEffect.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 15).isActive = true
+        stackEffect.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -15).isActive = true
+        stackEffect.bottomAnchor.constraint(equalTo: stackPlayer.topAnchor).isActive = true
+        
+        
+//        stackEffectLabel.axis = .horizontal
+//        stackEffectLabel.spacing = 5
+//        stackEffectLabel.distribution = UIStackView.Distribution.fill
+//        stackEffectLabel.backgroundColor = setting.colorBgrnd
+//
+//
+//
+//        view.addSubview(stackEffectSlider)
+//
+//        stackEffectSlider.heightAnchor.constraint(equalToConstant: 50).isActive = true
+//        stackEffectSlider.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -15).isActive = true
+//        stackEffectSlider.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 15).isActive = true
+//        stackEffectSlider.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -55).isActive = true
+    }
+ 
+    //MARK: - анимация кнопок переключения эффектов
+    private func clearColorButtonEffect(_ tag: Int) {
+        let setting = Setting.getSetting()
+        for button in buttonsEffect {
+            if button.tag != 0 {
+            button.backgroundColor = button.tag == tag ? setting.colorPressedButtonEffect : setting.colorBgrnd
+            labelsEffect[button.tag].backgroundColor = button.tag == tag ? setting.colorPressedButtonEffect : setting.colorBgrnd
+            }
+        }
+    }
+    
+    //MARK: - изменение настроек slider в зависимости от выбранного эффекта
+    private func сhangingSettingSliderEffect(_ tag: Int) {
+        
+        let setting = Setting.getSetting()
+        let typeSliders = EffectSliderValue.getEffectSliderValue()
+        
+        guard let indexValue = typeSliders.firstIndex(where: { $0.tag == tag }) else { return }
+        let typeSlider = typeSliders[indexValue]
+        
+        slidersEffect.minimumValue = typeSlider.minimum
+        slidersEffect.maximumValue = typeSlider.maximum
+        slidersEffect.value = sliderValue[tag]
+        slidersEffect.thumbTintColor = setting.colorBgrnd
+        
+        if typeSlider.track == .maximum {
+            slidersEffect.maximumTrackTintColor = setting.colorTint
+            slidersEffect.minimumTrackTintColor = setting.colorPressedButtonEffect
+        } else {
+            slidersEffect.minimumTrackTintColor = setting.colorTint
+            slidersEffect.maximumTrackTintColor = setting.colorPressedButtonEffect
+        }
+        slidersEffect.isContinuous = true
+    }
+    
+    private func сhangingSettingLabelEffect(_ tag: Int) {
+        let typeLabels = EffectSliderLabel.getEffectSliderLabel()
+        
+        guard let indexLabel = typeLabels.firstIndex(where: { $0.tag == tag }) else { return }
+        let typeLabel = typeLabels[indexLabel]
+        slidersTextEffect[0].text = typeLabel.minLabel
+        slidersTextEffect[1].text = typeLabel.maxLabel
+    }
+    
+    private func сhangingSettingImageEffect(_ tag: Int) {
+        let typeImages = EffectSliderImage.getEffectSliderImage()
+        guard let indexImage = typeImages.firstIndex(where: { $0.tag == tag }) else { return }
+        let typeImage = typeImages[indexImage]
+        slidersImageEffect[0].image = UIImage(systemName: typeImage.minImage)
+        slidersImageEffect[1].image = UIImage(systemName: typeImage.maxImage)
+    }
     
     //MARK: - setup Buttons for Player
     
@@ -305,7 +408,7 @@ extension AudioEngineViewController {
        
         stackEffectButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -15).isActive = true
         stackEffectButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 15).isActive = true
-        stackEffectButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -100).isActive = true
+        stackEffectButton.bottomAnchor.constraint(equalTo: stackEffect.topAnchor, constant: -10).isActive = true
     }
     
     private func setupLabelEffect() {
@@ -327,87 +430,9 @@ extension AudioEngineViewController {
         stackEffectLabel.leftAnchor.constraint(equalTo: stackEffectButton.leftAnchor).isActive = true
     }
     
-    private func setupSladerEffect(_ tag: Int) {
-        slidersEffect = SliderEffectView.shared.getSlidersEffect(tag)
-        
-        
-        view.addSubview(slidersEffect)
-        
-        slidersEffect.translatesAutoresizingMaskIntoConstraints = false
-        slidersEffect.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 15).isActive = true
-        slidersEffect.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -15).isActive = true
-        slidersEffect.bottomAnchor.constraint(equalTo: stackPlayer.topAnchor).isActive = true
-        
-        
-//        stackEffectLabel.axis = .horizontal
-//        stackEffectLabel.spacing = 5
-//        stackEffectLabel.distribution = UIStackView.Distribution.fill
-//        stackEffectLabel.backgroundColor = setting.colorBgrnd
-//
-//
-//
-//        view.addSubview(stackEffectSlider)
-//
-//        stackEffectSlider.heightAnchor.constraint(equalToConstant: 50).isActive = true
-//        stackEffectSlider.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -15).isActive = true
-//        stackEffectSlider.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 15).isActive = true
-//        stackEffectSlider.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -55).isActive = true
-    }
     
-    private func clearColorButtonEffect(_ tag: Int) {
-        let setting = Setting.getSetting()
-        for button in buttonsEffect {
-            if button.tag != 0 {
-            button.backgroundColor = button.tag == tag ? setting.colorPressedButtonEffect : setting.colorBgrnd
-            labelsEffect[button.tag].backgroundColor = button.tag == tag ? setting.colorPressedButtonEffect : setting.colorBgrnd
-            }
-        }
-    }
-    
-    private func shangingSettingSliderEffect(_ tag: Int) {
-        let typeSliders = EffectSliderValue.getEffectSliderValue()
-        let setting = Setting.getSetting()
-        guard let index = typeSliders.firstIndex(where: { $0.tag == tag }) else { return }
-        let type = typeSliders[index]
-        
-        
-        slidersEffect.minimumValue = type.minimum
-        slidersEffect.maximumValue = type.maximum
-        slidersEffect.value = type.value
-        slidersEffect.thumbTintColor = setting.colorBgrnd
-        
-        if type.track == .maximum {
-            slidersEffect.maximumTrackTintColor = setting.colorTint
-            slidersEffect.minimumTrackTintColor = setting.colorBgrnd
-        } else {
-            slidersEffect.minimumTrackTintColor = setting.colorTint
-            slidersEffect.maximumTrackTintColor = setting.colorBgrnd
-        }
-        slidersEffect.isContinuous = true
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-    func playOrPause() {
-        
-        if needsFileScheduled { scheduleAudioFile() }
-        if player.isPlaying {
-            player.pause()
-            let image = UIImage(systemName: Buttons.play.rawValue)
-            buttonsPlayer[2].setImage(image, for: .normal)
-        } else {
-            player.play()
-            let image = UIImage(systemName: Buttons.pause.rawValue)
-            buttonsPlayer[2].setImage(image, for: .normal)
-            
-        }
-        
-    }
+    // MARK: - navigation player
+  
     
     func goForward() {
         
