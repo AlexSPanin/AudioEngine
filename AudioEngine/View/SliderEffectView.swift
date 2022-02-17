@@ -64,6 +64,7 @@ class SliderEffectView {
         slider.maximumValue = maximum
         slider.value = value
         slider.thumbTintColor = setting.colorBgrnd
+        slider.backgroundColor = setting.colorBgrnd
         
         if track == .maximum {
             slider.maximumTrackTintColor = setting.colorTint

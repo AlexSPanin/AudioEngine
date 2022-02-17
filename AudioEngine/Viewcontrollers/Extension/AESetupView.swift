@@ -9,6 +9,14 @@ import UIKit
 
 extension AudioEngineViewController {
     
+    func setupUI(_ tag: Int) {
+        setupButtonsPlayer()
+        setupSladerEffect(tag)
+        setupButtonsEffect()
+        setupLabelEffect()
+        setupColorButtonPressedEffect(tag)
+    }
+    
     func setupSladerEffect(_ tag: Int) {
         slidersEffect = SliderEffectView.shared.getSlidersEffect(tag)
         slidersEffect.addTarget(self, action: #selector(turnEffectSlider), for: .allTouchEvents)

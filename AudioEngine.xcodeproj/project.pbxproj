@@ -78,9 +78,9 @@
 		E24A8A1827AAAD64008B297E /* AudioEngine */ = {
 			isa = PBXGroup;
 			children = (
+				E2F61F6127B7F9F9006D6A7A /* Viewcontrollers */,
 				E2F61F6C27B9862F006D6A7A /* View */,
 				E2F61F6327B7FADD006D6A7A /* Model */,
-				E2F61F6127B7F9F9006D6A7A /* Viewcontrollers */,
 				E2F61F6227B7FA20006D6A7A /* Services */,
 				E2F61F6027B7F9D2006D6A7A /* Files */,
 				E2F61F5F27B7F9B8006D6A7A /* Storyboards */,
@@ -119,8 +119,8 @@
 		E2F61F6127B7F9F9006D6A7A /* Viewcontrollers */ = {
 			isa = PBXGroup;
 			children = (
-				E2B7EDBA27BE4D6C00A83EA0 /* Extension */,
 				E24A8A2D27AAAFA8008B297E /* AudioEngineViewController.swift */,
+				E2B7EDBA27BE4D6C00A83EA0 /* Extension */,
 			);
 			path = Viewcontrollers;
 			sourceTree = "<group>";

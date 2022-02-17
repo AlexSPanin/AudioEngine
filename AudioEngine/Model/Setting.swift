@@ -25,6 +25,9 @@ struct Setting {
     let sizeButton: CGRect
     let sizeImageButton: CGRect
     
+    
+    
+    
     static func getSetting() -> Setting {
         Setting(
             nameFont: "Thonburi",
@@ -40,6 +43,7 @@ struct Setting {
             colorPressedButtonEffect: #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1),
             sizeButton: CGRect(x: 0, y: 0, width: 50, height: 60),
             sizeImageButton: CGRect(x: 0, y: 0, width: 50, height: 50)
+          
             
         )
     }
