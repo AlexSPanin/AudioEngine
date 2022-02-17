@@ -17,6 +17,8 @@
 		E24A8A3027AABB35008B297E /* Scott Buckley - Life In Silico.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E24A8A2F27AABB35008B297E /* Scott Buckley - Life In Silico.mp3 */; };
 		E252CDDA27BAAE7700318B20 /* Setting.swift in Sources */ = {isa = PBXBuildFile; fileRef = E252CDD927BAAE7700318B20 /* Setting.swift */; };
 		E252CDDC27BAB16900318B20 /* ButtonEffectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E252CDDB27BAB16900318B20 /* ButtonEffectView.swift */; };
+		E2B7EDB927BE4CD600A83EA0 /* otbivka.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E2B7EDB827BE4CD600A83EA0 /* otbivka.mp3 */; };
+		E2B7EDBC27BE4DAE00A83EA0 /* AESetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2B7EDBB27BE4DAE00A83EA0 /* AESetupView.swift */; };
 		E2F61F5E27B7F99E006D6A7A /* 01 The St. Louis Blues.m4a in Resources */ = {isa = PBXBuildFile; fileRef = E2F61F5D27B7F99E006D6A7A /* 01 The St. Louis Blues.m4a */; };
 		E2F61F6527B7FB0D006D6A7A /* Music.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F61F6427B7FB0D006D6A7A /* Music.swift */; };
 		E2F61F6927B923C7006D6A7A /* ButtonPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F61F6827B923C7006D6A7A /* ButtonPlayerView.swift */; };
@@ -37,6 +39,8 @@
 		E24A8A2F27AABB35008B297E /* Scott Buckley - Life In Silico.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Scott Buckley - Life In Silico.mp3"; sourceTree = "<group>"; };
 		E252CDD927BAAE7700318B20 /* Setting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Setting.swift; sourceTree = "<group>"; };
 		E252CDDB27BAB16900318B20 /* ButtonEffectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonEffectView.swift; sourceTree = "<group>"; };
+		E2B7EDB827BE4CD600A83EA0 /* otbivka.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = otbivka.mp3; sourceTree = "<group>"; };
+		E2B7EDBB27BE4DAE00A83EA0 /* AESetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AESetupView.swift; sourceTree = "<group>"; };
 		E2F61F5D27B7F99E006D6A7A /* 01 The St. Louis Blues.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = "01 The St. Louis Blues.m4a"; sourceTree = "<group>"; };
 		E2F61F6427B7FB0D006D6A7A /* Music.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Music.swift; sourceTree = "<group>"; };
 		E2F61F6827B923C7006D6A7A /* ButtonPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonPlayerView.swift; sourceTree = "<group>"; };
@@ -84,6 +88,14 @@
 			path = AudioEngine;
 			sourceTree = "<group>";
 		};
+		E2B7EDBA27BE4D6C00A83EA0 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				E2B7EDBB27BE4DAE00A83EA0 /* AESetupView.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
 		E2F61F5F27B7F9B8006D6A7A /* Storyboards */ = {
 			isa = PBXGroup;
 			children = (
@@ -99,6 +111,7 @@
 				E24A8A2227AAAD66008B297E /* Assets.xcassets */,
 				E24A8A2F27AABB35008B297E /* Scott Buckley - Life In Silico.mp3 */,
 				E2F61F5D27B7F99E006D6A7A /* 01 The St. Louis Blues.m4a */,
+				E2B7EDB827BE4CD600A83EA0 /* otbivka.mp3 */,
 			);
 			path = Files;
 			sourceTree = "<group>";
@@ -106,6 +119,7 @@
 		E2F61F6127B7F9F9006D6A7A /* Viewcontrollers */ = {
 			isa = PBXGroup;
 			children = (
+				E2B7EDBA27BE4D6C00A83EA0 /* Extension */,
 				E24A8A2D27AAAFA8008B297E /* AudioEngineViewController.swift */,
 			);
 			path = Viewcontrollers;
@@ -201,6 +215,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E2F61F5E27B7F99E006D6A7A /* 01 The St. Louis Blues.m4a in Resources */,
+				E2B7EDB927BE4CD600A83EA0 /* otbivka.mp3 in Resources */,
 				E24A8A2627AAAD66008B297E /* LaunchScreen.storyboard in Resources */,
 				E24A8A2327AAAD66008B297E /* Assets.xcassets in Resources */,
 				E24A8A2127AAAD64008B297E /* Main.storyboard in Resources */,
@@ -217,6 +232,7 @@
 			files = (
 				E21D41E827BCE7F700161C7C /* Sliders.swift in Sources */,
 				E2F61F6B27B926CD006D6A7A /* Buttons.swift in Sources */,
+				E2B7EDBC27BE4DAE00A83EA0 /* AESetupView.swift in Sources */,
 				E24A8A1A27AAAD64008B297E /* AppDelegate.swift in Sources */,
 				E24A8A2E27AAAFA8008B297E /* AudioEngineViewController.swift in Sources */,
 				E252CDDC27BAB16900318B20 /* ButtonEffectView.swift in Sources */,
