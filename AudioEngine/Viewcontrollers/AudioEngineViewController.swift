@@ -69,7 +69,7 @@ class AudioEngineViewController: UIViewController {
         setupSlidersValue()
         setupUI(tag)
         setupEffectValue()
-        setupAudio(music[0])
+        setupAudio(music[1])
     }
     
   
@@ -128,11 +128,9 @@ class AudioEngineViewController: UIViewController {
         reverb.loadFactoryPreset(.largeHall)
         
         let bands = equalizer.bands
-        bands[0].frequency = 5000
-        bands[0].filterType = .lowPass
+        bands[0].frequency = 20
+        bands[0].filterType = .highPass
         bands[0].bypass = false
-        
-        
         
         // Attach the nodes
         audioEngine.attach(audioPlayerNode1)
