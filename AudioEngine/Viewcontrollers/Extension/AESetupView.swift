@@ -11,29 +11,79 @@ extension AudioEngineViewController {
     
     
     func setupUI(track: Int, type: ButtonsEffect) {
+        createViewEditor()
         createViewEffect()
+        
         setupButtonsPlayer()
-        setupSladerEffect(type)
+        setupButtonsEditor()
         setupButtonsEffect()
         setupLabelEffect()
+        setupSladerEffect(type)
+        
+       
         setupColorButtonPressedEffect(track: track, type: type)
+       
     }
     
     // MARK: -  white subview for effect (надо в дальнейшем завести весь интерфес эффектов на него)
     
     func createViewEffect() {
         viewEffect.backgroundColor = setting.colorBgrnd
-        viewEffect.layer.cornerRadius = 15
+        viewEffect.layer.cornerRadius = 5
         
         view.addSubview(viewEffect)
         
         viewEffect.translatesAutoresizingMaskIntoConstraints = false
-        viewEffect.heightAnchor.constraint(equalToConstant: 200).isActive = true
-        viewEffect.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        viewEffect.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        viewEffect.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        viewEffect.heightAnchor.constraint(equalToConstant: 150).isActive = true
+        viewEffect.rightAnchor.constraint(equalTo: viewEditor.rightAnchor).isActive = true
+        viewEffect.leftAnchor.constraint(equalTo: viewEditor.leftAnchor).isActive = true
+        viewEffect.bottomAnchor.constraint(equalTo: viewEditor.topAnchor, constant: 5).isActive = true
     }
-  
+    //MARK: - setup Buttons and names for Labels Buttons for Effect
+    // установка меню кнопок эффектов
+    func setupButtonsEffect() {
+        let height: CGFloat = 37
+        buttonsEffect = ButtonEffectView.shared.getButtonEffect()
+        for button in buttonsEffect {
+            button.addTarget(self, action: #selector(pressEffectButtons), for: .touchDown)
+        }
+        stackEffectButton = UIStackView(arrangedSubviews: buttonsEffect)
+        
+        stackEffectButton.axis = .horizontal
+        stackEffectButton.spacing = 8
+        stackEffectButton.distribution = UIStackView.Distribution.fillEqually
+        stackEffectButton.backgroundColor = setting.colorBgrnd
+        
+        viewEffect.addSubview(stackEffectButton)
+        
+        stackEffectButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        stackEffectButton.heightAnchor.constraint(equalToConstant: height).isActive = true
+        stackEffectButton.leftAnchor.constraint(equalTo: viewEffect.leftAnchor, constant: 15).isActive = true
+        stackEffectButton.rightAnchor.constraint(equalTo: viewEffect.rightAnchor, constant: -15).isActive = true
+        stackEffectButton.topAnchor.constraint(equalTo: viewEffect.topAnchor, constant: 15).isActive = true
+    }
+    
+    // установка подписей к кнопкам эффектов
+    func setupLabelEffect() {
+        let setting = Setting.getSetting()
+        labelsEffect = ButtonEffectView.shared.getLabelEffect()
+        stackEffectLabel = UIStackView(arrangedSubviews: labelsEffect)
+        
+        stackEffectLabel.axis = .horizontal
+        stackEffectLabel.spacing = 8
+        stackEffectLabel.distribution = UIStackView.Distribution.fillEqually
+        stackEffectLabel.backgroundColor = setting.colorBgrnd
+        
+        viewEffect.addSubview(stackEffectLabel)
+        
+        stackEffectLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        stackEffectLabel.leftAnchor.constraint(equalTo: stackEffectButton.leftAnchor).isActive = true
+        stackEffectLabel.rightAnchor.constraint(equalTo: stackEffectButton.rightAnchor).isActive = true
+        stackEffectLabel.topAnchor.constraint(equalTo: stackEffectButton.bottomAnchor).isActive = true
+    }
+    
     // MARK: - установка блока слайдера (текст, слайдер, изображение)
     
     func setupSladerEffect(_ type: ButtonsEffect) {
@@ -58,12 +108,13 @@ extension AudioEngineViewController {
         stackEffect.spacing = 0
         stackEffect.distribution = UIStackView.Distribution.fillEqually
         
-        view.addSubview(stackEffect)
+        viewEffect.addSubview(stackEffect)
         
         stackEffect.translatesAutoresizingMaskIntoConstraints = false
-        stackEffect.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 15).isActive = true
-        stackEffect.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -15).isActive = true
-        stackEffect.bottomAnchor.constraint(equalTo: stackPlayer.topAnchor).isActive = true
+        
+        stackEffect.leftAnchor.constraint(equalTo: viewEffect.leftAnchor, constant: 15).isActive = true
+        stackEffect.rightAnchor.constraint(equalTo: viewEffect.rightAnchor, constant: -15).isActive = true
+        stackEffect.topAnchor.constraint(equalTo: stackEffectLabel.bottomAnchor, constant: 2).isActive = true
     }
     
     //MARK: - анимация кнопок переключения эффектов
@@ -154,62 +205,60 @@ extension AudioEngineViewController {
         stackPlayer.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         stackPlayer.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
     }
+    
     // смена вида пауза или игра проигрователя
     func changeImageButtonPlayPause(_ playOrPause: Bool) {
         if playOrPause {
-            let image = UIImage(systemName: Buttons.pause.rawValue)
+            let image = UIImage(systemName: "pause")
             buttonsPlayer[2].setImage(image, for: .normal)
         } else {
-            let image = UIImage(systemName: Buttons.play.rawValue)
+            let image = UIImage(systemName: "play")
             buttonsPlayer[2].setImage(image, for: .normal)
         }
     }
-    
-    //MARK: - setup Buttons and names for Labels Buttons for Effect
-    // установка меню кнопок эффектов
-    func setupButtonsEffect() {
-        let setting = Setting.getSetting()
-        buttonsEffect = ButtonEffectView.shared.getButtonEffect()
+    //MARK: - setup Buttons for Editor
+    func createViewEditor() {
+        viewEditor.backgroundColor = setting.colorBgrnd
+        viewEditor.layer.cornerRadius = 5
         
+        view.addSubview(viewEditor)
+        
+        viewEditor.translatesAutoresizingMaskIntoConstraints = false
+        viewEditor.heightAnchor.constraint(equalToConstant: 120).isActive = true
+        viewEditor.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        viewEditor.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        viewEditor.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+    }
+    
+    // установка кнопок редактора
+    func setupButtonsEditor() {
+        let height: CGFloat = 50
+        buttonsEffect = ButtonEditorView.shared.getButtonsEditor()
         for button in buttonsEffect {
-            button.addTarget(self, action: #selector(pressEffectButtons), for: .touchDown)
+            button.addTarget(self, action: #selector(pressEditorButtons), for: .touchDown)
         }
+        stackEditor = UIStackView(arrangedSubviews: buttonsEffect)
         
-        stackEffectButton = UIStackView(arrangedSubviews: buttonsEffect)
+        stackEditor.axis = .horizontal
+        stackEditor.spacing = 2
+        stackEditor.distribution = UIStackView.Distribution.fillEqually
+        stackEditor.backgroundColor = setting.colorBgrnd
         
-        stackEffectButton.axis = .horizontal
-        stackEffectButton.spacing = 5
-        stackEffectButton.distribution = UIStackView.Distribution.fillEqually
-        stackEffectButton.backgroundColor = setting.colorBgrnd
+        viewEditor.addSubview(stackEditor)
         
-        view.addSubview(stackEffectButton)
-        
-        stackEffectButton.translatesAutoresizingMaskIntoConstraints = false
-        
-        stackEffectButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -15).isActive = true
-        stackEffectButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 15).isActive = true
-        stackEffectButton.bottomAnchor.constraint(equalTo: stackEffect.topAnchor, constant: -10).isActive = true
-    }
-    // установка подписей к кнопкам эффектов
-    func setupLabelEffect() {
-        let setting = Setting.getSetting()
-        labelsEffect = ButtonEffectView.shared.getLabelEffect()
-        stackEffectLabel = UIStackView(arrangedSubviews: labelsEffect)
-        
-        stackEffectLabel.axis = .horizontal
-        stackEffectLabel.spacing = 5
-        stackEffectLabel.distribution = UIStackView.Distribution.fillEqually
-        stackEffectLabel.backgroundColor = setting.colorBgrnd
-        
-        view.addSubview(stackEffectLabel)
-        
-        stackEffectLabel.translatesAutoresizingMaskIntoConstraints = false
-        
-        stackEffectLabel.topAnchor.constraint(equalTo: stackEffectButton.bottomAnchor).isActive = true
-        stackEffectLabel.rightAnchor.constraint(equalTo: stackEffectButton.rightAnchor).isActive = true
-        stackEffectLabel.leftAnchor.constraint(equalTo: stackEffectButton.leftAnchor).isActive = true
+        stackEditor.translatesAutoresizingMaskIntoConstraints = false
+        stackEditor.heightAnchor.constraint(equalToConstant: height).isActive = true
+        stackEditor.leftAnchor.constraint(equalTo: viewEditor.leftAnchor, constant: 15).isActive = true
+        stackEditor.rightAnchor.constraint(equalTo: viewEditor.rightAnchor, constant: -15).isActive = true
+        stackEditor.topAnchor.constraint(equalTo: viewEditor.topAnchor, constant: 15).isActive = true
     }
     
+    
+    
+    
+    
+    
+ 
     //MARK: - hidden view Effect and change color pressed button effect
     // смена цвета нажатой кнопки
     func setupColorButtonPressedEffect(track: Int, type: ButtonsEffect) {
@@ -221,10 +270,11 @@ extension AudioEngineViewController {
     
     // выключение меню эффектов
     func hiddenEffectView() {
-        viewEffect.isHidden = true
-        stackEffectButton.isHidden = true
-        stackEffectLabel.isHidden = true
-        slidersEffect.isHidden = true
+        viewEffect.isHidden = isHiddenEffectView
+    //    stackEffectButton.isHidden = isHiddenEffectView
+    //    stackEffectLabel.isHidden = isHiddenEffectView
+    //    slidersEffect.isHidden = isHiddenEffectView
+        isHiddenEffectView.toggle()
     }
 }
 

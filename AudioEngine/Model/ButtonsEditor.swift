@@ -19,11 +19,11 @@ struct EditorButtons {
     static func getEditorButtons() -> [EditorButtons] {
         [
             EditorButtons(type: .effect, nameImage: "fx"),
-            EditorButtons(type: .copy, nameImage: "dot.radiowaves.up.forward"),
-            EditorButtons(type: .cut, nameImage: "slider.vertical.3"),
-            EditorButtons(type: .off, nameImage: "camera.metering.multispot"),
-            EditorButtons(type: .on, nameImage: "antenna.radiowaves.left.and.right"),
-            EditorButtons(type: .trash, nameImage: "antenna.radiowaves.left.and.right")
+            EditorButtons(type: .copy, nameImage: "square.on.square"),
+            EditorButtons(type: .cut, nameImage: "scissors"),
+            EditorButtons(type: .off, nameImage: "speaker"),
+            EditorButtons(type: .on, nameImage: "speaker.wave.2"),
+            EditorButtons(type: .trash, nameImage: "trash")
         ]
     }
 }

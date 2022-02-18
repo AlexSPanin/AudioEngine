@@ -18,7 +18,7 @@ class ButtonEffectView {
         
         for type in typeButtons {
             let tag = buttons.count
-            buttons.append(createButton(nameImage: type.nameImage, title: type.name, tag: tag))
+            buttons.append(createButton(nameImage: type.nameImage, tag: tag))
         }
         return buttons
     }
@@ -37,7 +37,7 @@ class ButtonEffectView {
     
     //MARK: - create button and ladel
     
-    private func createButton(nameImage: String, title: String, tag: Int) -> UIButton {
+    private func createButton(nameImage: String, tag: Int) -> UIButton {
         let setting = Setting.getSetting()
         let button = UIButton()
         let image = UIImage(systemName: nameImage)

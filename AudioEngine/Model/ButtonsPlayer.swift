@@ -8,29 +8,22 @@
 import Foundation
 
 
-enum Buttons: String {
-    case play = "play"
-    case pause = "pause"
-    case forward = "forward"
-    case backward = "backward"
-    case goforward = "goforward"
-    case gobackward = "gobackward"
+enum ButtonsPlayer: Int {
+    case gobackward, backward, play, forward, goforward
 }
 
 struct PlayerButtons {
     
-    let tag: Int
-    
-    let typeNormal: Buttons
-    let typeSelected: Buttons
+    let type: ButtonsPlayer
+    let nameImage: String
     
     static func getPlayerButtons() -> [PlayerButtons] {
         [
-            PlayerButtons(tag: 0, typeNormal: .gobackward, typeSelected: .gobackward),
-            PlayerButtons(tag: 1, typeNormal: .backward, typeSelected: .backward),
-            PlayerButtons(tag: 2, typeNormal: .play, typeSelected: .pause),
-            PlayerButtons(tag: 3, typeNormal: .forward, typeSelected: .forward),
-            PlayerButtons(tag: 4, typeNormal: .goforward, typeSelected: .goforward)
+            PlayerButtons(type: .gobackward, nameImage: "gobackward"),
+            PlayerButtons(type: .backward, nameImage: "backward"),
+            PlayerButtons(type: .play, nameImage: "play"),
+            PlayerButtons(type: .forward, nameImage: "forward"),
+            PlayerButtons(type: .goforward, nameImage: "goforward")
         ]
     }
 }

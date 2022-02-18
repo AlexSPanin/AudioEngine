@@ -14,22 +14,26 @@ class ButtonPlayerView {
     private init() {}
 
     func getButtonsPlayer () -> [UIButton] {
-        let setting = Setting.getSetting()
         let typeButtons = PlayerButtons.getPlayerButtons()
         var buttons: [UIButton] = []
         
         for type in typeButtons {
-            buttons.append(createButton(normal: type.typeNormal, selected: type.typeSelected ,  tint: setting.colorTintPlayerButton, tag: type.tag))
+            let tag = buttons.count
+            buttons.append(createButton(nameImage: type.nameImage, tag: tag))
         }
         return buttons
     }
   
-    private  func createButton(normal: Buttons, selected: Buttons, tint: UIColor, tag: Int) -> UIButton {
+    private  func createButton(nameImage: String, tag: Int) -> UIButton {
+        let setting = Setting.getSetting()
         let button = UIButton()
-        button.tintColor = tint
+        let image = UIImage(systemName: nameImage)
+        
+        button.setImage(image, for: .normal)
+        button.tintColor = setting.colorTintPlayerButton
+        button.backgroundColor = setting.colorBrgndPlayerButton
         button.tag = tag
-        button.setImage(UIImage(systemName: normal.rawValue), for: .normal)
-        button.setImage(UIImage(systemName: selected.rawValue), for: .highlighted)
+        
         return button
     }
 }

@@ -15,6 +15,13 @@ class AudioEngineViewController: UIViewController {
     var buttonsPlayer: [UIButton] = []
     var stackPlayer = UIStackView()
     
+    // Editor View
+    let viewEditor = UIView()
+    var buttonsEditor: [UIButton] = []
+    var stackEditor = UIStackView()
+    
+    
+    // MARK: - Effect View
     // Effect View
     let viewEffect = UIView()
     var stackEffect = UIStackView()
@@ -71,6 +78,7 @@ class AudioEngineViewController: UIViewController {
     // состояние плеера общее играет или нет
     var isPlaying: Bool = false
     
+    var isHiddenEffectView: Bool = true
     // значения настроек слайдеров по песням
     var tracksSlidersValue = TrackSlidersValue.getTrackSlidersValue()
     
@@ -79,6 +87,7 @@ class AudioEngineViewController: UIViewController {
         view.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
 
         setupUI(track: track, type: typeButtosEffect)
+        
         setupEffectValue()
         configureEngine(dataSongs)
     }
@@ -86,20 +95,44 @@ class AudioEngineViewController: UIViewController {
     // MARK: - обработка кнопок плеера
     
     @objc func pressEffectButtons(_ sender: UIButton) {
-        
-        typeButtosEffect = ButtonsEffect(rawValue: sender.tag) ?? .volume
-        setupColorButtonPressedEffect(track: track, type: typeButtosEffect)
-        
-        switch typeButtosEffect {
+        guard let type = ButtonsEffect(rawValue: sender.tag) else { return }
+
+        switch type {
         case .exit:
             hiddenEffectView()
         case .volume:
+            typeButtosEffect = .volume
+            setupColorButtonPressedEffect(track: track, type: typeButtosEffect)
             return
         case .eq:
+            typeButtosEffect = .eq
+            setupColorButtonPressedEffect(track: track, type: typeButtosEffect)
             return
         case .reverb:
+            typeButtosEffect = .reverb
+            setupColorButtonPressedEffect(track: track, type: typeButtosEffect)
             return
         case .delay:
+            typeButtosEffect = .delay
+            setupColorButtonPressedEffect(track: track, type: typeButtosEffect)
+            return
+        }
+    }
+    
+    @objc func pressEditorButtons(_ sender: UIButton) {
+        guard let type = ButtonsEditor(rawValue: sender.tag) else { return }
+        switch type {
+        case .effect:
+            hiddenEffectView()
+        case .copy:
+            return
+        case .cut:
+            return
+        case .off:
+            return
+        case .on:
+            return
+        case .trash:
             return
         }
     }
@@ -107,19 +140,18 @@ class AudioEngineViewController: UIViewController {
     // MARK: - обработка кнопок эффектов
     
     @objc func pressPlayerButtons(_ sender: UIButton) {
+        guard let type = ButtonsPlayer(rawValue: sender.tag) else { return }
         
-        switch sender.tag {
-        case 0:
+        switch type {
+        case .gobackward:
             return
-        case 1:
+        case .backward:
             return
-        case 2:
+        case .play:
             playButton(track)
-        case 3:
+        case .forward:
             return
-        case 4:
-            return
-        default:
+        case .goforward:
             return
         }
     }
@@ -175,7 +207,7 @@ class AudioEngineViewController: UIViewController {
         switch track {
         case 0:
             let bands = equalizer1.bands
-            bands[0].frequency = value * value * value / 2 // гипербола значений обработки частоты и положения слайдера
+            bands[0].frequency = value * value * value / 10 // гипербола значений обработки частоты и положения слайдера
         case 1:
             let bands = equalizer2.bands
             bands[0].frequency = value * value
@@ -304,7 +336,7 @@ class AudioEngineViewController: UIViewController {
     
     func playButton(_ track: Int) {
         
-        changeImageButtonPlayPause(isPlaying)
+        
         if dataPlayingSong[track].needsFileScheduled { scheduleAudioFile(track) }
         
         if isPlaying {
@@ -333,6 +365,7 @@ class AudioEngineViewController: UIViewController {
             }
         }
         isPlaying.toggle()
+        changeImageButtonPlayPause(isPlaying)
     }
     
     //MARK: -  первоначальные настройки эффектов по 3 нодам
@@ -342,7 +375,7 @@ class AudioEngineViewController: UIViewController {
         reverb1.loadFactoryPreset(.largeHall)
         
         let bands1 = equalizer1.bands
-        bands1[0].frequency = 25
+        bands1[0].frequency = 0
         bands1[0].filterType = .highPass
         bands1[0].bypass = false
         
@@ -350,7 +383,7 @@ class AudioEngineViewController: UIViewController {
         reverb2.loadFactoryPreset(.largeHall)
         
         let bands2 = equalizer2.bands
-        bands2[0].frequency = 25
+        bands2[0].frequency = 0
         bands2[0].filterType = .highPass
         bands2[0].bypass = false
         
@@ -358,7 +391,7 @@ class AudioEngineViewController: UIViewController {
         reverb3.loadFactoryPreset(.largeHall)
         
         let bands3 = equalizer3.bands
-        bands3[0].frequency = 25
+        bands3[0].frequency = 0
         bands3[0].filterType = .highPass
         bands3[0].bypass = false
     }
