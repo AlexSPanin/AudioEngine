@@ -8,7 +8,7 @@
 import Foundation
 
 
-enum Buttons: String, CaseIterable {
+enum Buttons: String {
     case play = "play"
     case pause = "pause"
     case forward = "forward"
@@ -20,6 +20,7 @@ enum Buttons: String, CaseIterable {
 struct PlayerButtons {
     
     let tag: Int
+    
     let typeNormal: Buttons
     let typeSelected: Buttons
     
