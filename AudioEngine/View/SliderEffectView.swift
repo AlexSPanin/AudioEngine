@@ -40,6 +40,7 @@ class SliderEffectView {
         }
         return labels
     }
+    
     // формирует изображения к слайдеру
     func getImagesEffect(_ type: ButtonsEffect) -> [UIImageView] {
         let index = type.rawValue
@@ -57,6 +58,8 @@ class SliderEffectView {
         images.append(maxImage)
         return images
     }
+    
+    //MARK: - create slider, label, button
     
     private func createSlider(track: SideTrack, value: Float, minimum: Float, maximum: Float) -> UISlider {
         let setting = Setting.getSetting()
@@ -76,7 +79,6 @@ class SliderEffectView {
             slider.maximumTrackTintColor = setting.colorPressedButtonEffect
         }
         slider.isContinuous = true
-        
         return slider
     }
     

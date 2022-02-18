@@ -52,7 +52,6 @@ struct EffectSliderValue {
     let type: ButtonsEffect
     let count: Int
     let track: SideTrack
-    
     let value: Float
     let minimum: Float
     let maximum: Float
@@ -89,7 +88,7 @@ struct TrackSlidersValue {
     var slidersValue: SlidersValue
     
     static func getTrackSlidersValue() -> [TrackSlidersValue] {
-        let tracks = Music.getMusic()
+        let tracks = Songs.getSongs()
         var tracksValue: [TrackSlidersValue] = []
         
         for _ in tracks {

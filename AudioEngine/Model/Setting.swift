@@ -25,9 +25,6 @@ struct Setting {
     let sizeButton: CGRect
     let sizeImageButton: CGRect
     
-    
-    
-    
     static func getSetting() -> Setting {
         Setting(
             nameFont: "Thonburi",

@@ -13,7 +13,6 @@ class ButtonEffectView {
     private init() {}
     
     func getButtonEffect() -> [UIButton] {
-        
         let typeButtons = EffectButtons.getEffectButtons()
         var buttons: [UIButton] = []
         
@@ -22,19 +21,6 @@ class ButtonEffectView {
             buttons.append(createButton(nameImage: type.nameImage, title: type.name, tag: tag))
         }
         return buttons
-    }
-    
-    private func createButton(nameImage: String, title: String, tag: Int) -> UIButton {
-        let setting = Setting.getSetting()
-        let button = UIButton()
-        let image = UIImage(systemName: nameImage)
-        
-        button.setImage(image, for: .normal)
-        button.tintColor = tag == 0 ? setting.colorBgrnd : setting.colorTint
-        button.backgroundColor = tag == 0 ? setting.colorBrgndPlayerButton : setting.colorBgrnd
-        button.tag = tag
-        
-        return button
     }
     
     func getLabelEffect() -> [UILabel] {
@@ -47,6 +33,21 @@ class ButtonEffectView {
             labels.append(createLabel(title: type.name, font: setting.nameFont, size: setting.smallSize, tag: tag))
         }
         return labels
+    }
+    
+    //MARK: - create button and ladel
+    
+    private func createButton(nameImage: String, title: String, tag: Int) -> UIButton {
+        let setting = Setting.getSetting()
+        let button = UIButton()
+        let image = UIImage(systemName: nameImage)
+        
+        button.setImage(image, for: .normal)
+        button.tintColor = tag == 0 ? setting.colorBgrnd : setting.colorTint
+        button.backgroundColor = tag == 0 ? setting.colorBrgndPlayerButton : setting.colorBgrnd
+        button.tag = tag
+        
+        return button
     }
     
     private func createLabel(title: String, font: String, size: CGFloat, tag: Int) -> UILabel {

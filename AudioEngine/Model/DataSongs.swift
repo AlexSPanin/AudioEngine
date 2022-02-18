@@ -6,11 +6,11 @@
 //
 
 import Foundation
+import AVFAudio
 
 struct DataSong {
-    let name: Music
+    let name: Songs
     let file: AVAudioFile
-    
     let length: Int
     let rate: Double
     let audioFormat: AVAudioFormat
@@ -19,7 +19,7 @@ struct DataSong {
         Double(length) / rate
     }
     static func getDataSong() -> [DataSong]{
-        let music = Music.getMusic()
+        let music = Songs.getSongs()
         var dataSongs: [DataSong] = []
         for song in music {
             guard let url = Bundle.main.url(forResource: song.name, withExtension: song.format) else { return dataSongs}
@@ -43,16 +43,16 @@ struct DataSong {
 }
 
 struct DataPlayingSong {
-    let tag: Int
+    let node: Int
     var isPlaying: Bool
     var isPlayerReady: Bool
     var needsFileScheduled: Bool
     var seekFrame: Double
     static func getDataPlayingSong() -> [DataPlayingSong] {
         [
-            DataPlayingSong(tag: 0, isPlaying: false, isPlayerReady: false, needsFileScheduled: true, seekFrame: 0),
-            DataPlayingSong(tag: 1, isPlaying: false, isPlayerReady: false, needsFileScheduled: true, seekFrame: 0),
-            DataPlayingSong(tag: 2, isPlaying: false, isPlayerReady: false, needsFileScheduled: true, seekFrame: 0)
+            DataPlayingSong(node: 0, isPlaying: false, isPlayerReady: false, needsFileScheduled: true, seekFrame: 0),
+            DataPlayingSong(node: 1, isPlaying: false, isPlayerReady: false, needsFileScheduled: true, seekFrame: 0),
+            DataPlayingSong(node: 2, isPlaying: false, isPlayerReady: false, needsFileScheduled: true, seekFrame: 0)
         ]
     }
 }

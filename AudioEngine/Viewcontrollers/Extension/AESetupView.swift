@@ -9,14 +9,17 @@ import UIKit
 
 extension AudioEngineViewController {
     
-    func setupUI(_ type: ButtonsEffect) {
+    
+    func setupUI(track: Int, type: ButtonsEffect) {
         createViewEffect()
         setupButtonsPlayer()
         setupSladerEffect(type)
         setupButtonsEffect()
         setupLabelEffect()
-  //      setupColorButtonPressedEffect(track: <#T##Int#>, type: type)
+        setupColorButtonPressedEffect(track: track, type: type)
     }
+    
+    // MARK: -  white subview for effect (надо в дальнейшем завести весь интерфес эффектов на него)
     
     func createViewEffect() {
         viewEffect.backgroundColor = setting.colorBgrnd
@@ -31,7 +34,7 @@ extension AudioEngineViewController {
         viewEffect.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
     }
   
-    
+    // MARK: - установка блока слайдера (текст, слайдер, изображение)
     
     func setupSladerEffect(_ type: ButtonsEffect) {
         slidersEffect = SliderEffectView.shared.getSlidersEffect(type)
@@ -64,6 +67,7 @@ extension AudioEngineViewController {
     }
     
     //MARK: - анимация кнопок переключения эффектов
+    
     func clearColorButtonEffect(_ type: ButtonsEffect) {
         let type = type.rawValue
         let setting = Setting.getSetting()
@@ -77,7 +81,6 @@ extension AudioEngineViewController {
     
     //MARK: - изменение настроек slider в зависимости от выбранного эффекта
     func сhangingSettingSliderEffect(track: Int, type: ButtonsEffect) {
-        
         let setting = Setting.getSetting()
         let typeSliders = EffectSliderValue.getEffectSliderValue()
         let trackSliderValue = tracksSlidersValue[track].slidersValue
@@ -111,16 +114,15 @@ extension AudioEngineViewController {
         
         slidersEffect.isContinuous = true
     }
-    
+    // смена подписей у слайдера
     func сhangingSettingLabelEffect(_ type: ButtonsEffect) {
         let typeLabels = EffectSliderLabel.getEffectSliderLabel()
-        
         let indexLabel = type.rawValue
         let typeLabel = typeLabels[indexLabel]
         slidersTextEffect[0].text = typeLabel.minLabel
         slidersTextEffect[1].text = typeLabel.maxLabel
     }
-    
+    // смена изображений у слайдера
     private func сhangingSettingImageEffect(_ type: ButtonsEffect) {
         let typeImages = EffectSliderImage.getEffectSliderImage()
         let indexImage = type.rawValue
@@ -130,9 +132,8 @@ extension AudioEngineViewController {
     }
     
     //MARK: - setup Buttons for Player
-    
+    // установка кнопок плеера
     func setupButtonsPlayer() {
-        
         let height = view.bounds.width / 8
         buttonsPlayer = ButtonPlayerView.shared.getButtonsPlayer()
         for button in buttonsPlayer {
@@ -153,9 +154,19 @@ extension AudioEngineViewController {
         stackPlayer.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         stackPlayer.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
     }
+    // смена вида пауза или игра проигрователя
+    func changeImageButtonPlayPause(_ playOrPause: Bool) {
+        if playOrPause {
+            let image = UIImage(systemName: Buttons.pause.rawValue)
+            buttonsPlayer[2].setImage(image, for: .normal)
+        } else {
+            let image = UIImage(systemName: Buttons.play.rawValue)
+            buttonsPlayer[2].setImage(image, for: .normal)
+        }
+    }
     
     //MARK: - setup Buttons and names for Labels Buttons for Effect
-    
+    // установка меню кнопок эффектов
     func setupButtonsEffect() {
         let setting = Setting.getSetting()
         buttonsEffect = ButtonEffectView.shared.getButtonEffect()
@@ -179,7 +190,7 @@ extension AudioEngineViewController {
         stackEffectButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 15).isActive = true
         stackEffectButton.bottomAnchor.constraint(equalTo: stackEffect.topAnchor, constant: -10).isActive = true
     }
-    
+    // установка подписей к кнопкам эффектов
     func setupLabelEffect() {
         let setting = Setting.getSetting()
         labelsEffect = ButtonEffectView.shared.getLabelEffect()
@@ -199,6 +210,8 @@ extension AudioEngineViewController {
         stackEffectLabel.leftAnchor.constraint(equalTo: stackEffectButton.leftAnchor).isActive = true
     }
     
+    //MARK: - hidden view Effect and change color pressed button effect
+    // смена цвета нажатой кнопки
     func setupColorButtonPressedEffect(track: Int, type: ButtonsEffect) {
         clearColorButtonEffect(type)
         сhangingSettingSliderEffect(track: track, type: type)
@@ -206,14 +219,13 @@ extension AudioEngineViewController {
         сhangingSettingImageEffect(type)
     }
     
+    // выключение меню эффектов
     func hiddenEffectView() {
         viewEffect.isHidden = true
         stackEffectButton.isHidden = true
         stackEffectLabel.isHidden = true
         slidersEffect.isHidden = true
     }
-    
- 
 }
 
 

@@ -17,8 +17,6 @@ enum Buttons: String, CaseIterable {
     case gobackward = "gobackward"
 }
 
-
-
 struct PlayerButtons {
     
     let tag: Int

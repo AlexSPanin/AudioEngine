@@ -10,91 +10,139 @@ import AVFoundation
 
 class AudioEngineViewController: UIViewController {
     
-    // элементы интерфейса
+    // MARK: - User Interface
+    // Player View
     var buttonsPlayer: [UIButton] = []
+    var stackPlayer = UIStackView()
+    
+    // Effect View
+    let viewEffect = UIView()
+    var stackEffect = UIStackView()
+    
+    // Effect Buttons
     var buttonsEffect: [UIButton] = []
     var labelsEffect: [UILabel] = []
+    var stackEffectButton = UIStackView()
+    var stackEffectLabel = UIStackView()
+    
+    //Effect Sliders
     var slidersEffect = UISlider()
     var slidersTextEffect: [UILabel] = []
     var slidersImageEffect: [UIImageView] = []
-    
-    var stackPlayer = UIStackView()
-    var stackEffectButton = UIStackView()
-    var stackEffectLabel = UIStackView()
     var stackEffectSlider = UIStackView()
     var stackEffectText = UIStackView()
     var stackEffectImage = UIStackView()
-    var stackEffect = UIStackView()
     
-    let viewEffect = UIView()
-    
-    // управление слайдерами
-    var sliderValue: [Float] = []
-    var tag: Int = 1
-    var track: Int = 0
-    var typeButtosEffect: ButtonsEffect = .volume
-    
-    
-//    var audioLengthSamples: Int?
-//    var audioSampleRate: Double?
-//    var audioLengthSeconds: Double?
-    
-    
-    
-//    var isPlayerReady: Bool?
-    var isPlaying: Bool = false
-//    var needsFileScheduled = true
-//    var seekFrame: Double?
-    
-    let music = Music.getMusic()
-    let setting = Setting.getSetting()
-    var dataSongs = DataSong.getDataSong()
-    var tracksSlidersValue = TrackSlidersValue.getTrackSlidersValue()
-    var dataPlayingSong = DataPlayingSong.getDataPlayingSong()
-    
-    
-    
+    // MARK: - AudioEngine
+    // Mixer and Engine
     var audioFile: AVAudioFile?
-    
     let audioEngine = AVAudioEngine()
     let audioMixer = AVAudioMixerNode()
     let micMixer = AVAudioMixerNode()
     
+    // Node 1
     let audioPlayerNode1 = AVAudioPlayerNode()
     let reverb1 = AVAudioUnitReverb()
     let delayEcho1 = AVAudioUnitDelay()
     let equalizer1 = AVAudioUnitEQ(numberOfBands: 1)
     
+    // Node 2
     let audioPlayerNode2 = AVAudioPlayerNode()
     let reverb2 = AVAudioUnitReverb()
     let delayEcho2 = AVAudioUnitDelay()
     let equalizer2 = AVAudioUnitEQ(numberOfBands: 1)
     
+    // Node 3
     let audioPlayerNode3 = AVAudioPlayerNode()
     let reverb3 = AVAudioUnitReverb()
     let delayEcho3 = AVAudioUnitDelay()
     let equalizer3 = AVAudioUnitEQ(numberOfBands: 1)
     
+    // MARK: - Data Songs and Settings UI and start value
+    let setting = Setting.getSetting()
+    var dataSongs = DataSong.getDataSong()
+    var dataPlayingSong = DataPlayingSong.getDataPlayingSong()
+    
+    
+    // MARK: - number song and start button effect
+    var track: Int = 0
+    var typeButtosEffect: ButtonsEffect = .volume
+   
+    // состояние плеера общее играет или нет
+    var isPlaying: Bool = false
+    
+    // значения настроек слайдеров по песням
+    var tracksSlidersValue = TrackSlidersValue.getTrackSlidersValue()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
-//        setupSlidersValue()
-        
-        setupUI(typeButtosEffect)
+
+        setupUI(track: track, type: typeButtosEffect)
         setupEffectValue()
         configureEngine(dataSongs)
     }
     
+    // MARK: - обработка кнопок плеера
     
-    
-    func playButton(_ track: Int) {
+    @objc func pressEffectButtons(_ sender: UIButton) {
         
-        playOrPause(track)
+        typeButtosEffect = ButtonsEffect(rawValue: sender.tag) ?? .volume
+        setupColorButtonPressedEffect(track: track, type: typeButtosEffect)
+        
+        switch typeButtosEffect {
+        case .exit:
+            hiddenEffectView()
+        case .volume:
+            return
+        case .eq:
+            return
+        case .reverb:
+            return
+        case .delay:
+            return
+        }
     }
     
-    func setupEffectValue() {
+    // MARK: - обработка кнопок эффектов
+    
+    @objc func pressPlayerButtons(_ sender: UIButton) {
         
+        switch sender.tag {
+        case 0:
+            return
+        case 1:
+            return
+        case 2:
+            playButton(track)
+        case 3:
+            return
+        case 4:
+            return
+        default:
+            return
+        }
+    }
+    
+    // MARK: - обработка слайдера
+    // сохранение значений в массиве и передача данных в функции установок значений
+    @objc func turnEffectSlider(_ sender: UISlider) {
+        switch typeButtosEffect {
+        case .exit:
+            return
+        case .volume:
+            tracksSlidersValue[track].slidersValue.volume = sender.value
+        case .eq:
+            tracksSlidersValue[track].slidersValue.eq = sender.value
+        case .reverb:
+            tracksSlidersValue[track].slidersValue.reverb = sender.value
+        case .delay:
+            tracksSlidersValue[track].slidersValue.delay = sender.value
+        }
+        setupEffectValue()
+    }
+    // менеджер передачи значений типа сладера в функцию устанок значений
+    func setupEffectValue() {
         switch typeButtosEffect {
         case .exit:
             return
@@ -108,9 +156,7 @@ class AudioEngineViewController: UIViewController {
             editingDelay(tracksSlidersValue[track].slidersValue.delay)
         }
     }
-    
-    
-    
+    // установка громкости
     func editingVolume(_ value: Float) {
         switch track {
         case 0:
@@ -124,12 +170,12 @@ class AudioEngineViewController: UIViewController {
             return
         }
     }
-    
+    // установка среза низкой частоты
     func editingEQ(_ value: Float) {
         switch track {
         case 0:
             let bands = equalizer1.bands
-            bands[0].frequency = value * value
+            bands[0].frequency = value * value * value / 2 // гипербола значений обработки частоты и положения слайдера
         case 1:
             let bands = equalizer2.bands
             bands[0].frequency = value * value
@@ -141,7 +187,7 @@ class AudioEngineViewController: UIViewController {
             return
         }
     }
-    
+    // установка объемного эффекта
     func editingReverb(_ value: Float) {
         switch track {
         case 0:
@@ -155,7 +201,7 @@ class AudioEngineViewController: UIViewController {
             return
         }
     }
-    
+    // установка времени задержки для эха
     func editingDelay(_ value: Float) {
         switch track {
         case 0:
@@ -170,6 +216,7 @@ class AudioEngineViewController: UIViewController {
         }
     }
     
+    //MARK: - Подготовка аудио движка
     
     func configureEngine(_ dataSongs: [DataSong]) {
         // setting start value effect
@@ -179,58 +226,61 @@ class AudioEngineViewController: UIViewController {
         let audioFormat2 = dataSongs[1].audioFormat
         let audioFormat3 = dataSongs[2].audioFormat
         
+        // MARK: - Attach the nodes
         
-        // Attach the nodes
+        // Node1
         audioEngine.attach(audioPlayerNode1)
         audioEngine.attach(delayEcho1)
         audioEngine.attach(reverb1)
         audioEngine.attach(equalizer1)
         
+        // Node2
         audioEngine.attach(audioPlayerNode2)
         audioEngine.attach(delayEcho2)
         audioEngine.attach(reverb2)
         audioEngine.attach(equalizer2)
         
+        // Node3
         audioEngine.attach(audioPlayerNode3)
         audioEngine.attach(delayEcho3)
         audioEngine.attach(reverb3)
         audioEngine.attach(equalizer3)
         
+        // Mixer and microfon Mixer
         audioEngine.attach(audioMixer)
         audioEngine.attach(micMixer)
         
-   //     audioEngine.connect(audioMixer, to: audioEngine.mainMixerNode)
+        // MARK: - connect Node
+        
+        // Node1
         audioEngine.connect(audioPlayerNode1, to: delayEcho1, format: audioFormat1)
         audioEngine.connect(delayEcho1, to: reverb1, format: audioFormat1)
         audioEngine.connect(reverb1, to: equalizer1, format: audioFormat1)
         audioEngine.connect(equalizer1, to: audioEngine.mainMixerNode, fromBus: 0, toBus: 0, format: audioFormat1)
-        
+        // Node2
         audioEngine.connect(audioPlayerNode2, to: delayEcho2, format: audioFormat2)
         audioEngine.connect(delayEcho2, to: reverb2, format: audioFormat2)
         audioEngine.connect(reverb2, to: equalizer2, format: audioFormat2)
         audioEngine.connect(equalizer2, to: audioEngine.mainMixerNode, fromBus: 0, toBus: 1, format: audioFormat2)
-        
+        // Node3
         audioEngine.connect(audioPlayerNode3, to: delayEcho3, format: audioFormat3)
         audioEngine.connect(delayEcho3, to: reverb3, format: audioFormat3)
         audioEngine.connect(reverb3, to: equalizer3, format: audioFormat3)
         audioEngine.connect(equalizer3, to: audioEngine.mainMixerNode, fromBus: 0, toBus: 2, format: audioFormat3)
-        
-        
-        
-        
+        // монтирование движка
         audioEngine.prepare()
-        
+        // старт движка и монтирование аудифайлов
         do {
             try audioEngine.start()
             for track in 0...2 {
                 scheduleAudioFile(track)
             }
-            
         } catch {
             print("error configure Engine")
         }
     }
     
+        // MARK: - create audio file and setting sign for ready play
     func scheduleAudioFile(_ track: Int) {
         let audioFile = dataSongs[track].file
         if dataPlayingSong[track].needsFileScheduled {
@@ -246,23 +296,13 @@ class AudioEngineViewController: UIViewController {
                 return
             }
         }
-        
         dataPlayingSong[track].needsFileScheduled.toggle()
         dataPlayingSong[track].isPlayerReady.toggle()
     }
     
-    func changeImageButtonPlayPause(_ playOrPause: Bool) {
-        if playOrPause {
-            let image = UIImage(systemName: Buttons.pause.rawValue)
-            buttonsPlayer[2].setImage(image, for: .normal)
-        } else {
-            let image = UIImage(systemName: Buttons.play.rawValue)
-            buttonsPlayer[2].setImage(image, for: .normal)
-        }
-    }
+    // MARK: -  запуск воспроизведения или пауза
     
-    
-    func playOrPause(_ track: Int) {
+    func playButton(_ track: Int) {
         
         changeImageButtonPlayPause(isPlaying)
         if dataPlayingSong[track].needsFileScheduled { scheduleAudioFile(track) }
@@ -295,101 +335,7 @@ class AudioEngineViewController: UIViewController {
         isPlaying.toggle()
     }
     
-    
-    @objc func pressEffectButtons(_ sender: UIButton) {
-        
-        typeButtosEffect = ButtonsEffect(rawValue: sender.tag) ?? .volume
-        setupColorButtonPressedEffect(track: track, type: typeButtosEffect)
-        
-        switch typeButtosEffect {
-        case .exit:
-            hiddenEffectView()
-        case .volume:
-            return
-        case .eq:
-            return
-        case .reverb:
-            return
-        case .delay:
-            return
-        } 
-    }
-    
-    @objc func pressPlayerButtons(_ sender: UIButton) {
-        
-        switch sender.tag {
-        case 0:
-            return
-        case 1:
-            return
-        case 2:
-            playButton(track)
-        case 3:
-            return
-        case 4:
-            return
-        default:
-            return
-        }
-    }
-    
-//    func setupSlidersValue() {
-//        let slidersValueEffect = EffectSliderValue.getEffectSliderValue()
-//        for slider in slidersValueEffect {
-//            sliderValue.append(slider.value)
-//        }
-//    }
-    
-    
-    @objc func turnEffectSlider(_ sender: UISlider) {
-        
-        switch tag {
-        case 1:
-            tracksSlidersValue[track].slidersValue.volume = sender.value
-        case 2:
-            tracksSlidersValue[track].slidersValue.eq = sender.value
-        case 3:
-            tracksSlidersValue[track].slidersValue.reverb = sender.value
-        case 4:
-            tracksSlidersValue[track].slidersValue.delay = sender.value
-        default:
-            print("Errortag Effect")
-            return
-        }
-        setupEffectValue()
-    }
-    
-    /*
-    func setupAudio(_ music: [Music]) {
-        for song in music {
-           
-            guard let url = Bundle.main.url(forResource: song.name, withExtension: song.format) else { return }
-            do {
-                let file = try AVAudioFile(forReading: url)
-                let format = file.processingFormat
-                
-                
-                let dataSong = DataSong(
-                    name: song.name,
-                    format: song.format,
-                    file: file,
-                    length: Int(file.length),
-                    rate: format.sampleRate,
-                    audioFormat: format
-                )
-                dataSongs.append(dataSong)
-                
-                //         audioLengthSeconds = Double(audioLengthSamples ?? 0) / (audioSampleRate ?? 1)
-                
-                //          configureEngine(index: 1, audioFormat: format)
-                
-            } catch {
-                print("error Setup Audio")
-            }
-            
-        }
-    }
-     */
+    //MARK: -  первоначальные настройки эффектов по 3 нодам
     
     func configureSetupEffect() {
         delayEcho1.delayTime = 0
