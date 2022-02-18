@@ -20,7 +20,6 @@ extension AudioEngineViewController {
         setupLabelEffect()
         setupSladerEffect(type)
         
-       
         setupColorButtonPressedEffect(track: track, type: type)
        
     }
