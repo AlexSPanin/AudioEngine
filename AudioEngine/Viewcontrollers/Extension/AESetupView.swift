@@ -21,7 +21,7 @@ extension AudioEngineViewController {
         setupSladerEffect(type)
         
         setupColorButtonPressedEffect(track: track, type: type)
-       
+       hiddenEffectView()
     }
     
     // MARK: -  white subview for effect (надо в дальнейшем завести весь интерфес эффектов на него)
