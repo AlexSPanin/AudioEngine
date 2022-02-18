@@ -9,25 +9,41 @@ import UIKit
 
 extension AudioEngineViewController {
     
-    func setupUI(_ tag: Int) {
+    func setupUI(_ type: ButtonsEffect) {
+        createViewEffect()
         setupButtonsPlayer()
-        setupSladerEffect(tag)
+        setupSladerEffect(type)
         setupButtonsEffect()
         setupLabelEffect()
-        setupColorButtonPressedEffect(tag)
+  //      setupColorButtonPressedEffect(track: <#T##Int#>, type: type)
     }
     
-    func setupSladerEffect(_ tag: Int) {
-        slidersEffect = SliderEffectView.shared.getSlidersEffect(tag)
+    func createViewEffect() {
+        viewEffect.backgroundColor = setting.colorBgrnd
+        viewEffect.layer.cornerRadius = 15
+        
+        view.addSubview(viewEffect)
+        
+        viewEffect.translatesAutoresizingMaskIntoConstraints = false
+        viewEffect.heightAnchor.constraint(equalToConstant: 200).isActive = true
+        viewEffect.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        viewEffect.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        viewEffect.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+    }
+  
+    
+    
+    func setupSladerEffect(_ type: ButtonsEffect) {
+        slidersEffect = SliderEffectView.shared.getSlidersEffect(type)
         slidersEffect.addTarget(self, action: #selector(turnEffectSlider), for: .allTouchEvents)
         
-        slidersTextEffect = SliderEffectView.shared.getLabelsEffect(tag)
+        slidersTextEffect = SliderEffectView.shared.getLabelsEffect(type)
         stackEffectText = UIStackView(arrangedSubviews: slidersTextEffect)
         stackEffectText.axis = .horizontal
         stackEffectText.spacing = 0
         stackEffectText.distribution = UIStackView.Distribution.fillEqually
         
-        slidersImageEffect = SliderEffectView.shared.getImagesEffect(tag)
+        slidersImageEffect = SliderEffectView.shared.getImagesEffect(type)
         stackEffectImage = UIStackView(arrangedSubviews: slidersImageEffect)
         stackEffectImage.axis = .horizontal
         stackEffectImage.spacing = 0
@@ -48,28 +64,28 @@ extension AudioEngineViewController {
     }
     
     //MARK: - анимация кнопок переключения эффектов
-    func clearColorButtonEffect(_ tag: Int) {
+    func clearColorButtonEffect(_ type: ButtonsEffect) {
+        let type = type.rawValue
         let setting = Setting.getSetting()
         for button in buttonsEffect {
             if button.tag != 0 {
-                button.backgroundColor = button.tag == tag ? setting.colorPressedButtonEffect : setting.colorBgrnd
-                labelsEffect[button.tag].backgroundColor = button.tag == tag ? setting.colorPressedButtonEffect : setting.colorBgrnd
+                button.backgroundColor = button.tag == type ? setting.colorPressedButtonEffect : setting.colorBgrnd
+                labelsEffect[button.tag].backgroundColor = button.tag == type ? setting.colorPressedButtonEffect : setting.colorBgrnd
             }
         }
     }
     
     //MARK: - изменение настроек slider в зависимости от выбранного эффекта
-    func сhangingSettingSliderEffect(_ tag: Int) {
+    func сhangingSettingSliderEffect(track: Int, type: ButtonsEffect) {
         
         let setting = Setting.getSetting()
         let typeSliders = EffectSliderValue.getEffectSliderValue()
-        
-        guard let indexValue = typeSliders.firstIndex(where: { $0.tag == tag }) else { return }
+        let trackSliderValue = tracksSlidersValue[track].slidersValue
+        let indexValue = type.rawValue
         let typeSlider = typeSliders[indexValue]
         
         slidersEffect.minimumValue = typeSlider.minimum
         slidersEffect.maximumValue = typeSlider.maximum
-        slidersEffect.value = sliderValue[tag]
         slidersEffect.thumbTintColor = setting.colorBgrnd
         
         if typeSlider.track == .maximum {
@@ -79,21 +95,35 @@ extension AudioEngineViewController {
             slidersEffect.minimumTrackTintColor = setting.colorTint
             slidersEffect.maximumTrackTintColor = setting.colorPressedButtonEffect
         }
+        
+        switch type {
+        case .exit:
+            return
+        case .volume:
+            slidersEffect.value = trackSliderValue.volume
+        case .eq:
+            slidersEffect.value = trackSliderValue.eq
+        case .reverb:
+            slidersEffect.value = trackSliderValue.reverb
+        case .delay:
+            slidersEffect.value = trackSliderValue.delay
+        }
+        
         slidersEffect.isContinuous = true
     }
     
-    func сhangingSettingLabelEffect(_ tag: Int) {
+    func сhangingSettingLabelEffect(_ type: ButtonsEffect) {
         let typeLabels = EffectSliderLabel.getEffectSliderLabel()
         
-        guard let indexLabel = typeLabels.firstIndex(where: { $0.tag == tag }) else { return }
+        let indexLabel = type.rawValue
         let typeLabel = typeLabels[indexLabel]
         slidersTextEffect[0].text = typeLabel.minLabel
         slidersTextEffect[1].text = typeLabel.maxLabel
     }
     
-    private func сhangingSettingImageEffect(_ tag: Int) {
+    private func сhangingSettingImageEffect(_ type: ButtonsEffect) {
         let typeImages = EffectSliderImage.getEffectSliderImage()
-        guard let indexImage = typeImages.firstIndex(where: { $0.tag == tag }) else { return }
+        let indexImage = type.rawValue
         let typeImage = typeImages[indexImage]
         slidersImageEffect[0].image = UIImage(systemName: typeImage.minImage)
         slidersImageEffect[1].image = UIImage(systemName: typeImage.maxImage)
@@ -169,14 +199,15 @@ extension AudioEngineViewController {
         stackEffectLabel.leftAnchor.constraint(equalTo: stackEffectButton.leftAnchor).isActive = true
     }
     
-    func setupColorButtonPressedEffect(_ tag: Int) {
-        clearColorButtonEffect(tag)
-        сhangingSettingSliderEffect(tag)
-        сhangingSettingLabelEffect(tag)
-        сhangingSettingImageEffect(tag)
+    func setupColorButtonPressedEffect(track: Int, type: ButtonsEffect) {
+        clearColorButtonEffect(type)
+        сhangingSettingSliderEffect(track: track, type: type)
+        сhangingSettingLabelEffect(type)
+        сhangingSettingImageEffect(type)
     }
     
     func hiddenEffectView() {
+        viewEffect.isHidden = true
         stackEffectButton.isHidden = true
         stackEffectLabel.isHidden = true
         slidersEffect.isHidden = true

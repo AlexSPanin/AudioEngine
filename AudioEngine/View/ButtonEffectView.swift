@@ -18,15 +18,16 @@ class ButtonEffectView {
         var buttons: [UIButton] = []
         
         for type in typeButtons {
-            buttons.append(createButton(type: type.type, title: type.name, tag: type.tag))
+            let tag = buttons.count
+            buttons.append(createButton(nameImage: type.nameImage, title: type.name, tag: tag))
         }
         return buttons
     }
     
-    private func createButton(type: Buttons, title: String, tag: Int) -> UIButton {
+    private func createButton(nameImage: String, title: String, tag: Int) -> UIButton {
         let setting = Setting.getSetting()
         let button = UIButton()
-        let image = UIImage(systemName: type.rawValue)
+        let image = UIImage(systemName: nameImage)
         
         button.setImage(image, for: .normal)
         button.tintColor = tag == 0 ? setting.colorBgrnd : setting.colorTint
@@ -42,7 +43,8 @@ class ButtonEffectView {
         var labels: [UILabel] = []
         
         for type in typeLabels {
-            labels.append(createLabel(title: type.name, font: setting.nameFont, size: setting.smallSize, tag: type.tag))
+            let tag = labels.count
+            labels.append(createLabel(title: type.name, font: setting.nameFont, size: setting.smallSize, tag: tag))
         }
         return labels
     }

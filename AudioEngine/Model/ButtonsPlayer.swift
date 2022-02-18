@@ -15,13 +15,9 @@ enum Buttons: String, CaseIterable {
     case backward = "backward"
     case goforward = "goforward"
     case gobackward = "gobackward"
-    
-    case exit = "fx"
-    case volume = "dot.radiowaves.up.forward"
-    case eq = "slider.vertical.3"
-    case reverb = "camera.metering.multispot"
-    case delay = "antenna.radiowaves.left.and.right"
 }
+
+
 
 struct PlayerButtons {
     
@@ -40,22 +36,6 @@ struct PlayerButtons {
     }
 }
 
-struct EffectButtons {
-    
-    let tag: Int
-    let type: Buttons
-    let name: String
-    
-    static func getEffectButtons() -> [EffectButtons] {
-        [
-            EffectButtons(tag: 0, type: .exit, name: "Выход"),
-            EffectButtons(tag: 1, type: .volume, name: "Громкость"),
-            EffectButtons(tag: 2, type: .eq, name: "Частоты"),
-            EffectButtons(tag: 3, type: .reverb, name: "Реверб"),
-            EffectButtons(tag: 4, type: .delay, name: "Дилэй")
-        ]
-    }
-}
 
 
 

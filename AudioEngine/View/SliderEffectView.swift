@@ -12,18 +12,18 @@ class SliderEffectView {
     static var shared = SliderEffectView()
     private init() {}
     
-    func getSlidersEffect(_ tag: Int) -> UISlider {
+    func getSlidersEffect(_ type: ButtonsEffect) -> UISlider {
         let typeSliders = EffectSliderValue.getEffectSliderValue()
-        guard let index = typeSliders.firstIndex(where: { $0.tag == tag }) else { return UISlider() }
+        let index = type.rawValue
         let type = typeSliders[index]
         let slider = createSlider(track: type.track, value: type.value, minimum: type.minimum, maximum: type.maximum)
         return slider
     }
     
     // функция подготовки надписи
-    func getLabelsEffect(_ tag: Int) -> [UILabel] {
+    func getLabelsEffect(_ type: ButtonsEffect) -> [UILabel] {
         var labels: [UILabel] = []
-        if tag == 1 {
+        if type == .volume {
             let setting = Setting.getSetting()
             let minLabel = createLabel(
                 title: "0 ДБ", font: setting.nameFont, size: setting.normalSize,
@@ -41,12 +41,14 @@ class SliderEffectView {
         return labels
     }
     // формирует изображения к слайдеру
-    func getImagesEffect(_ tag: Int) -> [UIImageView] {
+    func getImagesEffect(_ type: ButtonsEffect) -> [UIImageView] {
+        let index = type.rawValue
         var images: [UIImageView] = []
         let setting = Setting.getSetting()
         let sliderImage = EffectSliderImage.getEffectSliderImage()
-        let min = sliderImage[tag].minImage
-        let max = sliderImage[tag].maxImage
+        
+        let min = sliderImage[index].minImage
+        let max = sliderImage[index].maxImage
         let minImage = createImageView(name: min, colorTint: setting.colorTint, colorBgrnd: setting.colorBgrnd)
         let maxImage = createImageView(name: max, colorTint: setting.colorTint, colorBgrnd: setting.colorBgrnd)
         minImage.contentMode = .left

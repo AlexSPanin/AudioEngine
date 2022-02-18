@@ -19,10 +19,12 @@
 		E252CDDC27BAB16900318B20 /* ButtonEffectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E252CDDB27BAB16900318B20 /* ButtonEffectView.swift */; };
 		E2B7EDB927BE4CD600A83EA0 /* otbivka.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E2B7EDB827BE4CD600A83EA0 /* otbivka.mp3 */; };
 		E2B7EDBC27BE4DAE00A83EA0 /* AESetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2B7EDBB27BE4DAE00A83EA0 /* AESetupView.swift */; };
+		E2B7EDBE27BFF8A700A83EA0 /* ButtonsEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2B7EDBD27BFF8A700A83EA0 /* ButtonsEffect.swift */; };
+		E2B7EDC027BFFA5F00A83EA0 /* DataSongs.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2B7EDBF27BFFA5F00A83EA0 /* DataSongs.swift */; };
 		E2F61F5E27B7F99E006D6A7A /* 01 The St. Louis Blues.m4a in Resources */ = {isa = PBXBuildFile; fileRef = E2F61F5D27B7F99E006D6A7A /* 01 The St. Louis Blues.m4a */; };
 		E2F61F6527B7FB0D006D6A7A /* Music.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F61F6427B7FB0D006D6A7A /* Music.swift */; };
 		E2F61F6927B923C7006D6A7A /* ButtonPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F61F6827B923C7006D6A7A /* ButtonPlayerView.swift */; };
-		E2F61F6B27B926CD006D6A7A /* Buttons.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F61F6A27B926CD006D6A7A /* Buttons.swift */; };
+		E2F61F6B27B926CD006D6A7A /* ButtonsPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F61F6A27B926CD006D6A7A /* ButtonsPlayer.swift */; };
 		E2F61F6E27B98675006D6A7A /* SliderEffectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F61F6D27B98675006D6A7A /* SliderEffectView.swift */; };
 /* End PBXBuildFile section */
 
@@ -41,10 +43,12 @@
 		E252CDDB27BAB16900318B20 /* ButtonEffectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonEffectView.swift; sourceTree = "<group>"; };
 		E2B7EDB827BE4CD600A83EA0 /* otbivka.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = otbivka.mp3; sourceTree = "<group>"; };
 		E2B7EDBB27BE4DAE00A83EA0 /* AESetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AESetupView.swift; sourceTree = "<group>"; };
+		E2B7EDBD27BFF8A700A83EA0 /* ButtonsEffect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonsEffect.swift; sourceTree = "<group>"; };
+		E2B7EDBF27BFFA5F00A83EA0 /* DataSongs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSongs.swift; sourceTree = "<group>"; };
 		E2F61F5D27B7F99E006D6A7A /* 01 The St. Louis Blues.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = "01 The St. Louis Blues.m4a"; sourceTree = "<group>"; };
 		E2F61F6427B7FB0D006D6A7A /* Music.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Music.swift; sourceTree = "<group>"; };
 		E2F61F6827B923C7006D6A7A /* ButtonPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonPlayerView.swift; sourceTree = "<group>"; };
-		E2F61F6A27B926CD006D6A7A /* Buttons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Buttons.swift; sourceTree = "<group>"; };
+		E2F61F6A27B926CD006D6A7A /* ButtonsPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonsPlayer.swift; sourceTree = "<group>"; };
 		E2F61F6D27B98675006D6A7A /* SliderEffectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SliderEffectView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -139,9 +143,11 @@
 			isa = PBXGroup;
 			children = (
 				E2F61F6427B7FB0D006D6A7A /* Music.swift */,
-				E2F61F6A27B926CD006D6A7A /* Buttons.swift */,
 				E252CDD927BAAE7700318B20 /* Setting.swift */,
 				E21D41E727BCE7F700161C7C /* Sliders.swift */,
+				E2F61F6A27B926CD006D6A7A /* ButtonsPlayer.swift */,
+				E2B7EDBD27BFF8A700A83EA0 /* ButtonsEffect.swift */,
+				E2B7EDBF27BFFA5F00A83EA0 /* DataSongs.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -231,11 +237,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				E21D41E827BCE7F700161C7C /* Sliders.swift in Sources */,
-				E2F61F6B27B926CD006D6A7A /* Buttons.swift in Sources */,
+				E2F61F6B27B926CD006D6A7A /* ButtonsPlayer.swift in Sources */,
 				E2B7EDBC27BE4DAE00A83EA0 /* AESetupView.swift in Sources */,
 				E24A8A1A27AAAD64008B297E /* AppDelegate.swift in Sources */,
 				E24A8A2E27AAAFA8008B297E /* AudioEngineViewController.swift in Sources */,
+				E2B7EDC027BFFA5F00A83EA0 /* DataSongs.swift in Sources */,
 				E252CDDC27BAB16900318B20 /* ButtonEffectView.swift in Sources */,
+				E2B7EDBE27BFF8A700A83EA0 /* ButtonsEffect.swift in Sources */,
 				E24A8A1C27AAAD64008B297E /* SceneDelegate.swift in Sources */,
 				E2F61F6E27B98675006D6A7A /* SliderEffectView.swift in Sources */,
 				E2F61F6527B7FB0D006D6A7A /* Music.swift in Sources */,
