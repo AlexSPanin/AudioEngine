@@ -251,12 +251,6 @@ extension AudioEngineViewController {
         stackEditor.rightAnchor.constraint(equalTo: viewEditor.rightAnchor, constant: -15).isActive = true
         stackEditor.topAnchor.constraint(equalTo: viewEditor.topAnchor, constant: 15).isActive = true
     }
-    
-    
-    
-    
-    
-    
  
     //MARK: - hidden view Effect and change color pressed button effect
     // смена цвета нажатой кнопки
@@ -270,9 +264,6 @@ extension AudioEngineViewController {
     // выключение меню эффектов
     func hiddenEffectView() {
         viewEffect.isHidden = isHiddenEffectView
-    //    stackEffectButton.isHidden = isHiddenEffectView
-    //    stackEffectLabel.isHidden = isHiddenEffectView
-    //    slidersEffect.isHidden = isHiddenEffectView
         isHiddenEffectView.toggle()
     }
 }
