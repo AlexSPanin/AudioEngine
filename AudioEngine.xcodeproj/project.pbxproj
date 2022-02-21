@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		E21D41E827BCE7F700161C7C /* SlidersEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = E21D41E727BCE7F700161C7C /* SlidersEffect.swift */; };
+		E2492B3C27C3A0AD00A27C84 /* AEManagerButtonsSliders.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2492B3B27C3A0AD00A27C84 /* AEManagerButtonsSliders.swift */; };
+		E2492B3E27C3A17000A27C84 /* AESetupEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2492B3D27C3A17000A27C84 /* AESetupEngine.swift */; };
 		E24A8A1A27AAAD64008B297E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24A8A1927AAAD64008B297E /* AppDelegate.swift */; };
 		E24A8A1C27AAAD64008B297E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24A8A1B27AAAD64008B297E /* SceneDelegate.swift */; };
 		E24A8A2127AAAD64008B297E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E24A8A1F27AAAD64008B297E /* Main.storyboard */; };
@@ -32,6 +34,8 @@
 
 /* Begin PBXFileReference section */
 		E21D41E727BCE7F700161C7C /* SlidersEffect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlidersEffect.swift; sourceTree = "<group>"; };
+		E2492B3B27C3A0AD00A27C84 /* AEManagerButtonsSliders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AEManagerButtonsSliders.swift; sourceTree = "<group>"; };
+		E2492B3D27C3A17000A27C84 /* AESetupEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AESetupEngine.swift; sourceTree = "<group>"; };
 		E24A8A1627AAAD64008B297E /* AudioEngine.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AudioEngine.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E24A8A1927AAAD64008B297E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E24A8A1B27AAAD64008B297E /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -100,6 +104,8 @@
 			isa = PBXGroup;
 			children = (
 				E2B7EDBB27BE4DAE00A83EA0 /* AESetupView.swift */,
+				E2492B3D27C3A17000A27C84 /* AESetupEngine.swift */,
+				E2492B3B27C3A0AD00A27C84 /* AEManagerButtonsSliders.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -248,6 +254,7 @@
 				E24A8A1A27AAAD64008B297E /* AppDelegate.swift in Sources */,
 				E2B7EDC427C014E800A83EA0 /* ButtonEditorView.swift in Sources */,
 				E24A8A2E27AAAFA8008B297E /* AudioEngineViewController.swift in Sources */,
+				E2492B3E27C3A17000A27C84 /* AESetupEngine.swift in Sources */,
 				E2B7EDC027BFFA5F00A83EA0 /* DataSongs.swift in Sources */,
 				E252CDDC27BAB16900318B20 /* ButtonEffectView.swift in Sources */,
 				E2B7EDBE27BFF8A700A83EA0 /* ButtonsEffect.swift in Sources */,
@@ -256,6 +263,7 @@
 				E2B7EDC227C0131B00A83EA0 /* ButtonsEditor.swift in Sources */,
 				E2F61F6527B7FB0D006D6A7A /* Songs.swift in Sources */,
 				E2F61F6927B923C7006D6A7A /* ButtonPlayerView.swift in Sources */,
+				E2492B3C27C3A0AD00A27C84 /* AEManagerButtonsSliders.swift in Sources */,
 				E252CDDA27BAAE7700318B20 /* Setting.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
