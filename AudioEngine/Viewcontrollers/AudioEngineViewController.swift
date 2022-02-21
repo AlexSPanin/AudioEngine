@@ -82,6 +82,18 @@ class AudioEngineViewController: UIViewController {
     // значения настроек слайдеров по песням
     var tracksSlidersValue = TrackSlidersValue.getTrackSlidersValue()
     
+    
+    
+    let viewTab = UIView()
+    var nodesTabView = UITableView()
+    
+    
+    
+    
+    
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
