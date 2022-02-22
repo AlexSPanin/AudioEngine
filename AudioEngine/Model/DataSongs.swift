@@ -44,15 +44,35 @@ struct DataSong {
 
 struct DataPlayingSong {
     let node: Int
-    var isPlaying: Bool
-    var isPlayerReady: Bool
-    var needsFileScheduled: Bool
+    var addPlayList: Bool                     //признак добавления к проигрованию
+    var isEditing: Bool                       //признак активного редактирования
+    var isPlaying: Bool                       //признак что началось проигрование
+    var isPlayerReady: Bool                   //признак что в плеере смонтирован аудио файл и плеер готов его проиговать
+    var needsFileScheduled: Bool              //признак необходимости смонтировать аудиофайл
     var seekFrame: Double
     static func getDataPlayingSong() -> [DataPlayingSong] {
         [
-            DataPlayingSong(node: 0, isPlaying: false, isPlayerReady: false, needsFileScheduled: true, seekFrame: 0),
-            DataPlayingSong(node: 1, isPlaying: false, isPlayerReady: false, needsFileScheduled: true, seekFrame: 0),
-            DataPlayingSong(node: 2, isPlaying: false, isPlayerReady: false, needsFileScheduled: true, seekFrame: 0)
+            DataPlayingSong(node: 0,
+                            addPlayList: false,
+                            isEditing: false,
+                            isPlaying: false,
+                            isPlayerReady: false,
+                            needsFileScheduled: true,
+                            seekFrame: 0),
+            DataPlayingSong(node: 1,
+                            addPlayList: false,
+                            isEditing: false,
+                            isPlaying: false,
+                            isPlayerReady: false,
+                            needsFileScheduled: true,
+                            seekFrame: 0),
+            DataPlayingSong(node: 2,
+                            addPlayList: false,
+                            isEditing: false,
+                            isPlaying: false,
+                            isPlayerReady: false,
+                            needsFileScheduled: true,
+                            seekFrame: 0)
         ]
     }
 }

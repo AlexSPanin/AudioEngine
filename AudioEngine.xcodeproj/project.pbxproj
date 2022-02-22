@@ -10,7 +10,6 @@
 		E21D41E827BCE7F700161C7C /* SlidersEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = E21D41E727BCE7F700161C7C /* SlidersEffect.swift */; };
 		E2492B3C27C3A0AD00A27C84 /* AEManagerButtonsSliders.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2492B3B27C3A0AD00A27C84 /* AEManagerButtonsSliders.swift */; };
 		E2492B3E27C3A17000A27C84 /* AESetupEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2492B3D27C3A17000A27C84 /* AESetupEngine.swift */; };
-		E2492B4027C3A3D800A27C84 /* NodesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2492B3F27C3A3D800A27C84 /* NodesTableViewController.swift */; };
 		E2492B4227C3A40C00A27C84 /* NodeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2492B4127C3A40C00A27C84 /* NodeTableViewCell.swift */; };
 		E24A8A1A27AAAD64008B297E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24A8A1927AAAD64008B297E /* AppDelegate.swift */; };
 		E24A8A1C27AAAD64008B297E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24A8A1B27AAAD64008B297E /* SceneDelegate.swift */; };
@@ -21,6 +20,8 @@
 		E24A8A3027AABB35008B297E /* Scott Buckley - Life In Silico.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E24A8A2F27AABB35008B297E /* Scott Buckley - Life In Silico.mp3 */; };
 		E252CDDA27BAAE7700318B20 /* Setting.swift in Sources */ = {isa = PBXBuildFile; fileRef = E252CDD927BAAE7700318B20 /* Setting.swift */; };
 		E252CDDC27BAB16900318B20 /* ButtonEffectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E252CDDB27BAB16900318B20 /* ButtonEffectView.swift */; };
+		E25F838E27C4EB3300E95ACB /* AETableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E25F838D27C4EB3300E95ACB /* AETableViewDataSource.swift */; };
+		E25F839027C4EB7F00E95ACB /* AENodeTableViewCellDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E25F838F27C4EB7F00E95ACB /* AENodeTableViewCellDelegate.swift */; };
 		E2B7EDB927BE4CD600A83EA0 /* otbivka.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E2B7EDB827BE4CD600A83EA0 /* otbivka.mp3 */; };
 		E2B7EDBC27BE4DAE00A83EA0 /* AESetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2B7EDBB27BE4DAE00A83EA0 /* AESetupView.swift */; };
 		E2B7EDBE27BFF8A700A83EA0 /* ButtonsEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2B7EDBD27BFF8A700A83EA0 /* ButtonsEffect.swift */; };
@@ -38,7 +39,6 @@
 		E21D41E727BCE7F700161C7C /* SlidersEffect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlidersEffect.swift; sourceTree = "<group>"; };
 		E2492B3B27C3A0AD00A27C84 /* AEManagerButtonsSliders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AEManagerButtonsSliders.swift; sourceTree = "<group>"; };
 		E2492B3D27C3A17000A27C84 /* AESetupEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AESetupEngine.swift; sourceTree = "<group>"; };
-		E2492B3F27C3A3D800A27C84 /* NodesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodesTableViewController.swift; sourceTree = "<group>"; };
 		E2492B4127C3A40C00A27C84 /* NodeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeTableViewCell.swift; sourceTree = "<group>"; };
 		E24A8A1627AAAD64008B297E /* AudioEngine.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AudioEngine.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E24A8A1927AAAD64008B297E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -51,6 +51,8 @@
 		E24A8A2F27AABB35008B297E /* Scott Buckley - Life In Silico.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Scott Buckley - Life In Silico.mp3"; sourceTree = "<group>"; };
 		E252CDD927BAAE7700318B20 /* Setting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Setting.swift; sourceTree = "<group>"; };
 		E252CDDB27BAB16900318B20 /* ButtonEffectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonEffectView.swift; sourceTree = "<group>"; };
+		E25F838D27C4EB3300E95ACB /* AETableViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AETableViewDataSource.swift; sourceTree = "<group>"; };
+		E25F838F27C4EB7F00E95ACB /* AENodeTableViewCellDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AENodeTableViewCellDelegate.swift; sourceTree = "<group>"; };
 		E2B7EDB827BE4CD600A83EA0 /* otbivka.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = otbivka.mp3; sourceTree = "<group>"; };
 		E2B7EDBB27BE4DAE00A83EA0 /* AESetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AESetupView.swift; sourceTree = "<group>"; };
 		E2B7EDBD27BFF8A700A83EA0 /* ButtonsEffect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonsEffect.swift; sourceTree = "<group>"; };
@@ -110,6 +112,8 @@
 				E2B7EDBB27BE4DAE00A83EA0 /* AESetupView.swift */,
 				E2492B3D27C3A17000A27C84 /* AESetupEngine.swift */,
 				E2492B3B27C3A0AD00A27C84 /* AEManagerButtonsSliders.swift */,
+				E25F838D27C4EB3300E95ACB /* AETableViewDataSource.swift */,
+				E25F838F27C4EB7F00E95ACB /* AENodeTableViewCellDelegate.swift */,
 			);
 			path = ExtensionAudioEngine;
 			sourceTree = "<group>";
@@ -137,7 +141,6 @@
 		E2F61F6127B7F9F9006D6A7A /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				E2492B3F27C3A3D800A27C84 /* NodesTableViewController.swift */,
 				E24A8A2D27AAAFA8008B297E /* AudioEngineViewController.swift */,
 				E2B7EDBA27BE4D6C00A83EA0 /* ExtensionAudioEngine */,
 			);
@@ -256,13 +259,14 @@
 			files = (
 				E21D41E827BCE7F700161C7C /* SlidersEffect.swift in Sources */,
 				E2F61F6B27B926CD006D6A7A /* ButtonsPlayer.swift in Sources */,
+				E25F839027C4EB7F00E95ACB /* AENodeTableViewCellDelegate.swift in Sources */,
 				E2492B4227C3A40C00A27C84 /* NodeTableViewCell.swift in Sources */,
 				E2B7EDBC27BE4DAE00A83EA0 /* AESetupView.swift in Sources */,
 				E24A8A1A27AAAD64008B297E /* AppDelegate.swift in Sources */,
 				E2B7EDC427C014E800A83EA0 /* ButtonEditorView.swift in Sources */,
 				E24A8A2E27AAAFA8008B297E /* AudioEngineViewController.swift in Sources */,
+				E25F838E27C4EB3300E95ACB /* AETableViewDataSource.swift in Sources */,
 				E2492B3E27C3A17000A27C84 /* AESetupEngine.swift in Sources */,
-				E2492B4027C3A3D800A27C84 /* NodesTableViewController.swift in Sources */,
 				E2B7EDC027BFFA5F00A83EA0 /* DataSongs.swift in Sources */,
 				E252CDDC27BAB16900318B20 /* ButtonEffectView.swift in Sources */,
 				E2B7EDBE27BFF8A700A83EA0 /* ButtonsEffect.swift in Sources */,
