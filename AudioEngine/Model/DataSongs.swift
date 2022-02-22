@@ -11,7 +11,8 @@ import AVFAudio
 struct DataSong {
     let name: Songs
     let file: AVAudioFile
-    let length: Int
+    let lengthSamples: Int
+    let length: Double
     let rate: Double
     let audioFormat: AVAudioFormat
     
@@ -29,7 +30,8 @@ struct DataSong {
                 let dataSong = DataSong(
                     name: song,
                     file: file,
-                    length: Int(file.length),
+                    lengthSamples: Int(file.length),
+                    length: Double(file.length) / format.sampleRate,
                     rate: format.sampleRate,
                     audioFormat: format
                 )
@@ -39,41 +41,6 @@ struct DataSong {
             }
         }
         return dataSongs
-    }
-}
-
-struct DataPlayingSong {
-    let node: Int
-    var addPlayList: Bool                     //признак добавления к проигрованию
-    var isEditing: Bool                       //признак активного редактирования
-    var isPlaying: Bool                       //признак что началось проигрование
-    var isPlayerReady: Bool                   //признак что в плеере смонтирован аудио файл и плеер готов его проиговать
-    var needsFileScheduled: Bool              //признак необходимости смонтировать аудиофайл
-    var seekFrame: Double
-    static func getDataPlayingSong() -> [DataPlayingSong] {
-        [
-            DataPlayingSong(node: 0,
-                            addPlayList: false,
-                            isEditing: false,
-                            isPlaying: false,
-                            isPlayerReady: false,
-                            needsFileScheduled: true,
-                            seekFrame: 0),
-            DataPlayingSong(node: 1,
-                            addPlayList: false,
-                            isEditing: false,
-                            isPlaying: false,
-                            isPlayerReady: false,
-                            needsFileScheduled: true,
-                            seekFrame: 0),
-            DataPlayingSong(node: 2,
-                            addPlayList: false,
-                            isEditing: false,
-                            isPlaying: false,
-                            isPlayerReady: false,
-                            needsFileScheduled: true,
-                            seekFrame: 0)
-        ]
     }
 }
 
